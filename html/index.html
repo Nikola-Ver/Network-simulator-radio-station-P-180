@@ -8,11 +8,52 @@
     <title>Радиостанция Р-180</title>
   </head>
   <body>
-    <div
-      id="broadcast"
-      onmousedown="isBroadcasting()"
-      onmouseup="isNotBroadcasting()"
-    ></div>
+    <div class="broadcast_button_block">
+      <div class="broadcast_button_top_bolt"></div>
+      <p class="broadcast_button_text">ТНГ</p>
+      <div
+        class="broadcast_button"
+        onmousedown="isBroadcasting()"
+        onmouseup="isNotBroadcasting()"
+      ></div>
+      <div class="broadcast_button_bottom_bolt"></div>
+    </div>
+    <div class="radiostation">
+      <div class="radiostation_antenna_block">
+        <div class="radiostation_antenna_not_active"></div>
+      </div>
+      <div class="radiostation_body">
+        <div class="radiostation_power_button"></div>
+        <div class="radiostation_display"></div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_ok">✓</div>
+          <div class="radiostation_button" id="button_menu">M</div>
+          <div class="radiostation_button" id="button_cancel">×</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_1">1</div>
+          <div class="radiostation_button" id="button_2">2</div>
+          <div class="radiostation_button" id="button_3">3</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_4">4</div>
+          <div class="radiostation_button" id="button_5">5</div>
+          <div class="radiostation_button" id="button_6">6</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_7">7</div>
+          <div class="radiostation_button" id="button_8">8</div>
+          <div class="radiostation_button" id="button_9">9</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_lattice">#</div>
+          <div class="radiostation_button" id="button_0">0</div>
+          <div class="radiostation_button" id="button_star">*</div>
+        </div>
+      </div>
+      <div class="radiostation_accum_not_active"></div>
+    </div>
+
     <script type="text/javascript" src="../js/modules/socket.io.js"></script>
     <script src="../js/script.js"></script>
   </body>

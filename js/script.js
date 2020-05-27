@@ -1,6 +1,6 @@
 const socket = io();
 const recordLength = 500;
-const broadcastButton = document.getElementById("broadcast");
+const [broadcastButton] = document.getElementsByClassName("broadcast_button");
 let chanel = 1;
 let flagAlert = true;
 let flagBroadcasting = true;
@@ -8,18 +8,16 @@ let flagBroadcasting = true;
 broadcastButton.addEventListener("touchstart", isBroadcasting);
 broadcastButton.addEventListener("touchend", isNotBroadcasting);
 
-function takeChanel() {
+function selectChanel() {
   chanel = Number(document.getElementById("chanel").value);
 }
 
 function isBroadcasting() {
-  broadcastButton.style.background = "blue";
   flagBroadcasting = true;
   broadcasting();
 }
 
 function isNotBroadcasting() {
-  broadcastButton.style.background = "red";
   flagBroadcasting = false;
 }
 

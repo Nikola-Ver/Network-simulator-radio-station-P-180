@@ -1,5 +1,230 @@
-#broadcast {
-  width: 200px;
-  height: 200px;
-  background: red;
+:root {
+  --coeff-size-station: 34;
+}
+
+body {
+  background: url("../img/background.jpg") no-repeat;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.radiostation {
+  width: calc(var(--coeff-size-station) * 6px);
+  height: calc(var(--coeff-size-station) * 29.5px);
+  margin: auto;
+  margin-top: calc(var(--coeff-size-station) / 10 * 1px);
+  overflow: hidden;
+}
+
+.radiostation_body {
+  display: flex;
+  flex-direction: column;
+  background: url("../img/radiostation_body.png") no-repeat;
+  height: 49%;
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+}
+
+.radiostation_accum_active {
+  background: url("../img/radiostation_accum.png") no-repeat;
+  height: 30%;
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+  transition: 0.5s;
+}
+
+.radiostation_accum_not_active {
+  background: url("../img/radiostation_accum.png") no-repeat;
+  margin-top: 150%;
+  height: 30%;
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  -o-background-size: 100%;
+  background-size: 100%;
+  transition: 0.5s;
+}
+
+.radiostation_display {
+  border-radius: 5px;
+  border: calc(var(--coeff-size-station) / 5 * 1px) solid #212121;
+  border-left-width: calc(var(--coeff-size-station) / 5 * 1.5px);
+  border-right-width: calc(var(--coeff-size-station) / 5 * 1.5px);
+  height: calc(var(--coeff-size-station) / 5 * 12px);
+  width: calc(var(--coeff-size-station) / 5 * 16px);
+  background: #312a3a;
+  margin: auto;
+  margin-bottom: 0;
+  margin-top: calc(var(--coeff-size-station) / 5 * 12px);
+}
+
+.radiostation_button_block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 5px;
+  width: calc(var(--coeff-size-station) / 5 * 17px);
+  height: calc(var(--coeff-size-station) / 5 * 4px);
+  padding-left: calc(var(--coeff-size-station) / 50 * 5px);
+  padding-right: calc(var(--coeff-size-station) / 50 * 5px);
+  background: #52524f;
+  box-shadow: inset 0px 0 20px 0 black;
+  margin: auto;
+  margin-bottom: 0;
+  margin-top: calc(var(--coeff-size-station) / 10 * 3.05px);
+}
+
+.radiostation_button_block:nth-child(3) {
+  margin-top: calc(var(--coeff-size-station) / 5 * 3px);
+}
+
+.radiostation_button_block:nth-child(5) {
+  margin-top: calc(var(--coeff-size-station) / 100 * 25px);
+}
+
+.radiostation_power_button {
+  margin-top: calc(var(--coeff-size-station) / 9 * 20px);
+  margin-right: calc(var(--coeff-size-station) / 9 * 7px);
+  margin-left: auto;
+  margin-bottom: 0;
+  width: calc(var(--coeff-size-station) * 1.05px);
+  height: calc(var(--coeff-size-station) / 9 * 7px);
+  background: url("../img/radiostation_power_button.png") no-repeat;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: calc(var(--coeff-size-station) / 45 * -3px);
+  border-radius: 100%;
+  overflow: hidden;
+  box-shadow: inset 0px 0 5px 0 black;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.radiostation_power_button:active {
+  box-shadow: inset 0px 0 10px 0 black;
+}
+
+.radiostation_button {
+  width: calc(var(--coeff-size-station) / 5 * 5px);
+  height: calc(var(--coeff-size-station) / 5 * 3px);
+  margin-top: calc(var(--coeff-size-station) / 5 * 0.5px);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  font-size: calc(var(--coeff-size-station) / 45 * 22px);
+  font-family: DejaVu Sans Mono, monospace;
+  text-align: center;
+  box-shadow: inset 0px 0 2px 0 black;
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  transition: 0.1s;
+}
+
+.radiostation_button:active {
+  box-shadow: inset 0px 0 7px 0 black;
+}
+
+.radiostation_antenna_active {
+  height: calc(var(--coeff-size-station) * 8px);
+  width: calc(var(--coeff-size-station) * 0.8px);
+  margin-right: calc(var(--coeff-size-station) * 1.43px);
+  background: #292929;
+  margin-left: auto;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.radiostation_antenna_not_active {
+  height: calc(var(--coeff-size-station) * 8px);
+  width: calc(var(--coeff-size-station) * 0.8px);
+  margin-right: calc(var(--coeff-size-station) * 1.43px);
+  background: #292929;
+  margin-left: auto;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  margin-top: calc(var(--coeff-size-station) * (-1) * 8px);
+  transition: 0.5s;
+}
+
+.radiostation_antenna_block {
+  height: calc(var(--coeff-size-station) * 8px);
+  width: 100%;
+  margin-bottom: -10px;
+  overflow: hidden;
+}
+
+.broadcast_button_block {
+  position: fixed;
+  height: calc(var(--coeff-size-station) * 5.4px);
+  width: calc(var(--coeff-size-station) * 1.5px);
+  background-color: #52524f;
+  border-radius: 7px;
+  left: 1%;
+  top: 1%;
+}
+
+.broadcast_button_top_bolt,
+.broadcast_button_bottom_bolt {
+  height: calc(var(--coeff-size-station) / 3 * 1px);
+  width: calc(var(--coeff-size-station) / 3 * 1px);
+  border-radius: 100%;
+  background-color: rgb(204, 204, 204);
+  margin: auto;
+  margin-bottom: 0;
+  margin-top: calc(var(--coeff-size-station) / 3 * 1px);
+}
+
+.broadcast_button_text {
+  font-size: calc(var(--coeff-size-station) / 2 * 1px);
+  text-align: center;
+  margin-bottom: calc(var(--coeff-size-station) / 100 * 1px);
+  margin-top: calc(var(--coeff-size-station) / 10 * 1px);
+}
+
+.broadcast_button {
+  height: calc(var(--coeff-size-station) * 3px);
+  width: calc(var(--coeff-size-station) * 1px);
+  background-color: #292929;
+  margin: auto;
+  border-radius: 7px;
+  box-shadow: inset 0 0 10px 0 black;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.broadcast_button:active {
+  box-shadow: inset 0 0 5px 0 black;
+}
+
+#button_cancel {
+  font-size: calc(var(--coeff-size-station) / 45 * 23px);
+}
+
+#button_star {
+  font-size: calc(var(--coeff-size-station) / 45 * 30px);
+}
+
+@media screen and (max-height: 900px) {
+  :root {
+    --coeff-size-station: 23;
+  }
+
+  .radiostation_button,
+  .radiostation_power_button,
+  .radiostation_antenna_active,
+  .broadcast_button {
+    cursor: auto;
+  }
 }

@@ -1,5 +1,5 @@
 const socket = io();
-const recordLength = 300;
+const recordLength = 500;
 const broadcastButton = document.getElementById("broadcast");
 let chanel = 1;
 let flagAlert = true;
@@ -35,7 +35,7 @@ function recordAudio() {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.addEventListener("dataavailable", (event) => {
         socket.emit("stream", {
-          audioChunks: Array(event.data),
+          audioChunks: event.data,
           chanel,
         });
       });
@@ -56,7 +56,7 @@ function recordAudio() {
 socket.on("stream", async (stream) => {
   if (!flagBroadcasting)
     try {
-      const audioBlob = new Blob(stream.audioChunks);
+      const audioBlob = new Blob(Array(stream.audioChunks));
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       await audio.play();
@@ -78,3 +78,5 @@ async function broadcasting() {
     else await recorder.start();
   }, recordLength);
 }
+
+console.error = () => {};

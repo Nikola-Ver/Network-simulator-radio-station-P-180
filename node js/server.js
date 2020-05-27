@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const fs = require("fs");
+const https = require("https");
 const port = 1000;
+var options = {
+  key: fs.readFileSync("localhost.key"),
+  cert: fs.readFileSync("localhost.crt"),
+};
+let server = https.createServer(options, app);
+const io = require("socket.io")(server);
 
 app.use(express.static(__dirname.slice().replace(/\\[^\\]*$/, "")));
 io.on("connection", (socket) => {

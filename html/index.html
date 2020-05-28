@@ -8,15 +8,34 @@
     <title>Радиостанция Р-180</title>
   </head>
   <body>
-    <div class="broadcast_button_block">
-      <div class="broadcast_button_top_bolt"></div>
-      <p class="broadcast_button_text">ТНГ</p>
-      <div
-        class="broadcast_button"
-        onmousedown="isBroadcasting()"
-        onmouseup="isNotBroadcasting()"
-      ></div>
-      <div class="broadcast_button_bottom_bolt"></div>
+    <div class="open_controls_block">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="controls_close">
+      <div class="broadcast_button_block">
+        <div class="broadcast_button_top_bolt"></div>
+        <p class="broadcast_button_text">ТНГ</p>
+        <div
+          class="broadcast_button"
+          onmousedown="isBroadcasting()"
+          onmouseup="isNotBroadcasting()"
+        ></div>
+        <div class="broadcast_button_bottom_bolt"></div>
+      </div>
+      <div class="controls_call_broadcast">
+        <p class="call_text">ВЫЗ</p>
+        <div class="call"></div>
+        <p class="broadcast_text">
+          ПРД
+        </p>
+        <div
+          class="broadcast"
+          onmousedown="isBroadcasting()"
+          onmouseup="isNotBroadcasting()"
+        ></div>
+      </div>
     </div>
     <div class="radiostation">
       <div class="radiostation_antenna_block">
@@ -55,6 +74,7 @@
     </div>
 
     <script type="text/javascript" src="../js/modules/socket.io.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../js/clientLogicBroadcasting.js"></script>
+    <script src="../js/clientControls.js"></script>
   </body>
 </html>

@@ -38,6 +38,7 @@ body {
   -webkit-background-size: 100%;
   -o-background-size: 100%;
   background-size: 100%;
+  cursor: pointer;
   transition: 0.5s;
 }
 
@@ -117,7 +118,7 @@ body {
   width: calc(var(--coeff-size-station) / 5 * 5px);
   height: calc(var(--coeff-size-station) / 5 * 3px);
   margin-top: calc(var(--coeff-size-station) / 5 * 0.5px);
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.5);
   font-size: calc(var(--coeff-size-station) / 45 * 22px);
   font-family: DejaVu Sans Mono, monospace;
@@ -166,13 +167,72 @@ body {
 }
 
 .broadcast_button_block {
-  position: fixed;
+  margin-left: 0;
   height: calc(var(--coeff-size-station) * 5.4px);
   width: calc(var(--coeff-size-station) * 1.5px);
   background-color: #52524f;
   border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+}
+
+.controls_open,
+.controls_close {
+  position: fixed;
+  height: calc(var(--coeff-size-station) * 15px);
+  width: calc(var(--coeff-size-station) * 1.5px);
+  left: 0.5%;
+  top: 10%;
+  overflow: hidden;
+  transition: 1s;
+}
+
+.controls_close {
+  height: 0;
+}
+
+.open_controls_block,
+.close_controls_block {
+  width: calc(var(--coeff-size-station) * 1.2px);
+  height: calc(var(--coeff-size-station) * 0.75px);
+  position: fixed;
   left: 1%;
   top: 1%;
+  cursor: pointer;
+}
+
+.open_controls_block div,
+.close_controls_block div {
+  width: calc(var(--coeff-size-station) * 1.2px);
+  height: calc(var(--coeff-size-station) * 0.15px);
+  background-color: white;
+  border-radius: calc(var(--coeff-size-station) * 0.15px);
+  transform-origin: 0 100%;
+  transition: 0.5s;
+}
+
+.open_controls_block div:not(:nth-child(1)),
+.close_controls_block div:not(:nth-child(1)) {
+  margin-top: calc(var(--coeff-size-station) * 0.15px);
+}
+
+.open_controls_block div:nth-child(3),
+.close_controls_block div:nth-child(3) {
+  transform-origin: 30% 100%;
+}
+
+.close_controls_block div:nth-child(1) {
+  transform-origin: 0 100%;
+  transform: rotate(45deg);
+}
+
+.close_controls_block div:nth-child(2) {
+  opacity: 0;
+}
+
+.close_controls_block div:nth-child(3) {
+  transform-origin: 30% 100%;
+  transform: rotate(-45deg);
 }
 
 .broadcast_button_top_bolt,
@@ -191,6 +251,7 @@ body {
   text-align: center;
   margin-bottom: calc(var(--coeff-size-station) / 100 * 1px);
   margin-top: calc(var(--coeff-size-station) / 10 * 1px);
+  font-family: DejaVu Sans Mono, monospace;
 }
 
 .broadcast_button {
@@ -198,6 +259,8 @@ body {
   width: calc(var(--coeff-size-station) * 1px);
   background-color: #292929;
   margin: auto;
+  margin-bottom: 0;
+  margin-top: 0;
   border-radius: 7px;
   box-shadow: inset 0 0 10px 0 black;
   transition: 0.2s;
@@ -205,6 +268,39 @@ body {
 }
 
 .broadcast_button:active {
+  box-shadow: inset 0 0 5px 0 black;
+}
+
+.controls_call_broadcast {
+  height: calc(var(--coeff-size-station) * 5.6px);
+  width: calc(var(--coeff-size-station) * 1.5px);
+  overflow: hidden;
+}
+
+.call_text,
+.broadcast_text {
+  font-size: calc(var(--coeff-size-station) / 2 * 1px);
+  text-align: center;
+  font-family: DejaVu Sans Mono, monospace;
+  margin-bottom: calc(var(--coeff-size-station) / 45 * 2px);
+  color: white;
+}
+
+.call,
+.broadcast {
+  width: calc(var(--coeff-size-station) * 1.4px);
+  height: calc(var(--coeff-size-station) * 1.4px);
+  margin: auto;
+  margin-top: 0;
+  border-radius: 100%;
+  background: #292929;
+  box-shadow: inset 0 0 10px 0 black;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.call:active,
+.broadcast:active {
   box-shadow: inset 0 0 5px 0 black;
 }
 
@@ -224,7 +320,23 @@ body {
   .radiostation_button,
   .radiostation_power_button,
   .radiostation_antenna_active,
-  .broadcast_button {
+  .broadcast_button,
+  .radiostation_accum_active,
+  .open_controls_block,
+  .close_controls_block,
+  .call,
+  .broadcast {
     cursor: auto;
+  }
+
+  .controls_open,
+  .controls_close {
+    left: 2%;
+    top: 15%;
+  }
+
+  .open_controls_block,
+  .close_controls_block {
+    left: 2.5%;
   }
 }

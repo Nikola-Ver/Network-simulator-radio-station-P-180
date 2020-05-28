@@ -31,7 +31,8 @@ body {
   background-size: 100%;
 }
 
-.radiostation_accum_active {
+.radiostation_accum_active,
+.radiostation_accum_not_active {
   background: url("../img/radiostation_accum.png") no-repeat;
   height: 30%;
   -moz-background-size: 100%;
@@ -43,14 +44,7 @@ body {
 }
 
 .radiostation_accum_not_active {
-  background: url("../img/radiostation_accum.png") no-repeat;
   margin-top: 150%;
-  height: 30%;
-  -moz-background-size: 100%;
-  -webkit-background-size: 100%;
-  -o-background-size: 100%;
-  background-size: 100%;
-  transition: 0.5s;
 }
 
 .radiostation_display {
@@ -184,15 +178,15 @@ body {
   left: 0.5%;
   top: 10%;
   overflow: hidden;
-  transition: 1s;
+  transition: 0.3s;
 }
 
 .controls_close {
   height: 0;
 }
 
-.open_controls_block,
-.close_controls_block {
+.open_controls_button,
+.close_controls_button {
   width: calc(var(--coeff-size-station) * 1.2px);
   height: calc(var(--coeff-size-station) * 0.75px);
   position: fixed;
@@ -201,36 +195,36 @@ body {
   cursor: pointer;
 }
 
-.open_controls_block div,
-.close_controls_block div {
+.open_controls_button div,
+.close_controls_button div {
   width: calc(var(--coeff-size-station) * 1.2px);
   height: calc(var(--coeff-size-station) * 0.15px);
   background-color: white;
   border-radius: calc(var(--coeff-size-station) * 0.15px);
   transform-origin: 0 100%;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
-.open_controls_block div:not(:nth-child(1)),
-.close_controls_block div:not(:nth-child(1)) {
+.open_controls_button div:not(:nth-child(1)),
+.close_controls_button div:not(:nth-child(1)) {
   margin-top: calc(var(--coeff-size-station) * 0.15px);
 }
 
-.open_controls_block div:nth-child(3),
-.close_controls_block div:nth-child(3) {
+.open_controls_button div:nth-child(3),
+.close_controls_button div:nth-child(3) {
   transform-origin: 30% 100%;
 }
 
-.close_controls_block div:nth-child(1) {
+.close_controls_button div:nth-child(1) {
   transform-origin: 0 100%;
   transform: rotate(45deg);
 }
 
-.close_controls_block div:nth-child(2) {
+.close_controls_button div:nth-child(2) {
   opacity: 0;
 }
 
-.close_controls_block div:nth-child(3) {
+.close_controls_button div:nth-child(3) {
   transform-origin: 30% 100%;
   transform: rotate(-45deg);
 }
@@ -252,6 +246,9 @@ body {
   margin-bottom: calc(var(--coeff-size-station) / 100 * 1px);
   margin-top: calc(var(--coeff-size-station) / 10 * 1px);
   font-family: DejaVu Sans Mono, monospace;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
 
 .broadcast_button {
@@ -271,9 +268,15 @@ body {
   box-shadow: inset 0 0 5px 0 black;
 }
 
-.controls_call_broadcast {
+.controls_call_broadcast_open {
   height: calc(var(--coeff-size-station) * 5.6px);
   width: calc(var(--coeff-size-station) * 1.5px);
+  overflow: hidden;
+}
+
+.controls_call_broadcast_close {
+  height: 0;
+  width: 0;
   overflow: hidden;
 }
 
@@ -284,6 +287,9 @@ body {
   font-family: DejaVu Sans Mono, monospace;
   margin-bottom: calc(var(--coeff-size-station) / 45 * 2px);
   color: white;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
 
 .call,
@@ -304,6 +310,82 @@ body {
   box-shadow: inset 0 0 5px 0 black;
 }
 
+.connect_controls_button {
+  background: url("../img/socket.png") no-repeat;
+  width: calc(var(--coeff-size-station) * 1.5px);
+  height: calc(var(--coeff-size-station) * 1.5px);
+  background-color: white;
+  background-size: 90%;
+  box-shadow: inset 0 0 10px 0 black;
+  font-size: calc(var(--coeff-size-station) / 40 * 18px);
+  text-align: center;
+  font-family: DejaVu Sans Mono, monospace;
+  margin-bottom: calc(var(--coeff-size-station) / 45 * 2px);
+  color: white;
+  border-radius: 100%;
+  position: fixed;
+  padding: calc(var(--coeff-size-station) / 20 * 5px);
+  padding-bottom: 0;
+  padding-top: calc(var(--coeff-size-station) / 20 * 7px);
+  right: 1%;
+  bottom: 1%;
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  left: auto;
+  transition: 0.2s;
+}
+
+.connect_controls_button:active,
+.connect_controls_block_open div:active,
+.connect_controls_block_close div:active {
+  box-shadow: inset 0 0 5px 0 black;
+  text-shadow: 0 0 5px white;
+}
+
+.connect_controls_block_open,
+.connect_controls_block_close {
+  width: calc(var(--coeff-size-station) * 3.5px);
+  height: calc(var(--coeff-size-station) / 10 * 82px);
+  border-radius: calc(var(--coeff-size-station) / 8 * 5px);
+  box-shadow: inset 0 0 10px 0 black;
+  position: fixed;
+  right: 1%;
+  left: auto;
+  top: 1%;
+  background: #52524f;
+  transition: 0.2s;
+}
+
+.connect_controls_block_close {
+  top: -100%;
+}
+
+.connect_controls_block_open p,
+.connect_controls_block_close p {
+  font-size: calc(var(--coeff-size-station) / 40 * 18px);
+  text-align: center;
+  font-family: DejaVu Sans Mono, monospace;
+  margin-bottom: calc(var(--coeff-size-station) / 45 * 2px);
+  color: white;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+.connect_controls_block_open div,
+.connect_controls_block_close div {
+  width: calc(var(--coeff-size-station) * 3px);
+  height: calc(var(--coeff-size-station) * 1.5px);
+  border-radius: calc(var(--coeff-size-station) * 1.5px);
+  background: #292929;
+  box-shadow: inset 0 0 15px 0 black;
+  margin: auto;
+  margin-top: calc(var(--coeff-size-station) / 10 * 1px);
+  cursor: pointer;
+}
+
 #button_cancel {
   font-size: calc(var(--coeff-size-station) / 45 * 23px);
 }
@@ -322,10 +404,13 @@ body {
   .radiostation_antenna_active,
   .broadcast_button,
   .radiostation_accum_active,
-  .open_controls_block,
-  .close_controls_block,
+  .open_controls_button,
+  .close_controls_button,
   .call,
-  .broadcast {
+  .broadcast,
+  .connect_controls_button,
+  .connect_controls_block_open div,
+  .connect_controls_block_close div {
     cursor: auto;
   }
 
@@ -335,8 +420,12 @@ body {
     top: 15%;
   }
 
-  .open_controls_block,
-  .close_controls_block {
+  .connect_controls_button {
+    bottom: 2%;
+  }
+
+  .open_controls_button,
+  .close_controls_button {
     left: 2.5%;
   }
 }

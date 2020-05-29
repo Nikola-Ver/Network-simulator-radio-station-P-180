@@ -1,12 +1,15 @@
 const socket = io();
 const recordLength = 500;
+const beepLength = 100;
 const [broadcastButton] = document.getElementsByClassName("broadcast_button");
 const [_broadcastButton] = document.getElementsByClassName("broadcast");
+const [callButton] = document.getElementsByClassName("call");
+const beep = new Audio("../music/beep.mp3");
 
 let userFrequencys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let chanel = 1;
-let flagAlert = true;
+let chanel = 0;
 let flagBroadcasting = false;
+let flagBeepNow = false;
 broadcasting();
 
 let flagBattarey = false;
@@ -18,6 +21,8 @@ broadcastButton.addEventListener("touchstart", isBroadcasting);
 broadcastButton.addEventListener("touchend", isNotBroadcasting);
 _broadcastButton.addEventListener("touchstart", isBroadcasting);
 _broadcastButton.addEventListener("touchend", isNotBroadcasting);
+callButton.addEventListener("touchstart", isBroadcastingBeep);
+callButton.addEventListener("touchend", isNotBroadcastingBeep);
 
 function selectChanel() {
   chanel = Number(document.getElementById("chanel").value);
@@ -25,12 +30,25 @@ function selectChanel() {
 
 function isBroadcasting() {
   if (flagAntenna && flagTurnOn) {
+    if (flagBeepNow) stopBeep();
     flagBroadcasting = true;
     broadcasting();
   }
 }
 
 function isNotBroadcasting() {
+  flagBroadcasting = false;
+}
+
+function isBroadcastingBeep() {
+  if (flagAntenna && flagTurnOn) {
+    if (flagBeepNow) stopBeep();
+    flagBroadcasting = true;
+    broadcastingBeep();
+  }
+}
+
+function isNotBroadcastingBeep() {
   flagBroadcasting = false;
 }
 
@@ -47,7 +65,8 @@ function recordAudio() {
       mediaRecorder.addEventListener("dataavailable", (event) => {
         socket.emit("stream", {
           audioChunks: event.data,
-          chanel: userFrequencys[chanel],
+          frequency: userFrequencys[chanel],
+          beep: false,
         });
       });
 
@@ -64,103 +83,94 @@ function recordAudio() {
   });
 }
 
+function stopBeep() {
+  beep.pause();
+  beep.currentTime = 0;
+  flagBeepNow = false;
+}
+
 socket.on("stream", async (stream) => {
-  if (!flagBroadcasting && flagAntenna && flagTurnOn)
-    try {
-      const audioBlob = new Blob(Array(stream.audioChunks));
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      await audio.play();
-    } catch {
-      if (flagAlert) {
-        alert("Голосовая связь не поддерживается на данном устройстве");
-        flagAlert = false;
-      }
-    }
+  if (!flagBroadcasting && flagAntenna && flagTurnOn) {
+    if (stream.frequency === userFrequencys[chanel])
+      try {
+        if (stream.beep) {
+          if (!flagBeepNow) {
+            beep.play();
+            flagBeepNow = true;
+          } else {
+            if (beep.currentTime > 595) beep.currentTime = 0.142821;
+          }
+        } else {
+          if (flagBeepNow) {
+            stopBeep();
+          } else {
+            const audioBlob = new Blob(Array(stream.audioChunks));
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            await audio.play();
+          }
+        }
+      } catch {}
+  }
+});
+
+function getTime(date) {
+  let hours = String(date.getHours());
+  let minutes = String(date.getMinutes());
+  if (hours.length < 2) hours = "0" + hours;
+  if (minutes.length < 2) minutes = "0" + minutes;
+  return hours + ":" + minutes;
+}
+
+socket.on("recording", async (record) => {
+  const [divParent] = document.getElementsByClassName("records_block");
+  const block = document.createElement("div");
+  const audioTag = document.createElement("audio");
+  const text = document.createElement("p");
+  const date = new Date();
+
+  const audioBlob = new Blob(record.audioChunks, { type: "audio/mp3" });
+  const audioUrl = URL.createObjectURL(audioBlob);
+  audioTag.controls = true;
+  audioTag.src = audioUrl;
+
+  text.textContent = getTime(date) + " (" + String(record.frequency) + "МГц):";
+
+  block.className = "audio_block";
+  block.appendChild(text);
+  block.appendChild(audioTag);
+  divParent.appendChild(block);
 });
 
 async function broadcasting() {
   const recorder = await recordAudio();
-  recorder.start();
+  if (flagBroadcasting) {
+    recorder.start();
 
+    const interval = setInterval(async () => {
+      await recorder.stop();
+      if (!flagBroadcasting) clearInterval(interval);
+      else await recorder.start();
+    }, recordLength);
+  }
+}
+
+function broadcastingBeep() {
   const interval = setInterval(async () => {
-    await recorder.stop();
-    if (!flagBroadcasting) clearInterval(interval);
-    else await recorder.start();
-  }, recordLength);
-}
-
-const [radiostationPowerButton] = document.getElementsByClassName(
-  "radiostation_power_button"
-);
-const [battareyButton] = document.getElementsByClassName("battery_button");
-const [antennaButton] = document.getElementsByClassName("antenna_button");
-const [headsetButton] = document.getElementsByClassName("headset_button");
-const [radiostationAntennaButton] = document.getElementsByClassName(
-  "radiostation_antenna_not_active"
-);
-const [radiostationAccumButton] = document.getElementsByClassName(
-  "radiostation_accum_not_active"
-);
-
-battareyButton.addEventListener("click", battareyFunc);
-antennaButton.addEventListener("click", antennaFunc);
-headsetButton.addEventListener("click", headsetFunc);
-radiostationAccumButton.addEventListener("click", battareyFunc);
-radiostationAntennaButton.addEventListener("click", antennaFunc);
-radiostationPowerButton.addEventListener("click", turnRadiostation);
-
-const [divBattarey] = document.getElementsByClassName(
-  "radiostation_accum_not_active"
-);
-const [divAntenna] = document.getElementsByClassName(
-  "radiostation_antenna_not_active"
-);
-const [divHeadset] = document.getElementsByClassName(
-  "controls_call_broadcast_close"
-);
-
-function battareyFunc() {
-  if (flagBattarey) {
-    divBattarey.className = "radiostation_accum_not_active";
-    flagBattarey = false;
-    flagTurnOn = false;
-    flagBroadcasting = false;
-  } else {
-    divBattarey.className = "radiostation_accum_active";
-    flagBattarey = true;
-  }
-}
-
-function antennaFunc() {
-  if (flagAntenna) {
-    divAntenna.className = "radiostation_antenna_not_active";
-    flagAntenna = false;
-    flagBroadcasting = false;
-  } else {
-    divAntenna.className = "radiostation_antenna_active";
-    flagAntenna = true;
-  }
-}
-
-function headsetFunc() {
-  if (flagHeadset) {
-    divHeadset.className = "controls_call_broadcast_close";
-    flagHeadset = false;
-  } else {
-    divHeadset.className = "controls_call_broadcast_open";
-    flagHeadset = true;
-  }
-}
-
-function turnRadiostation() {
-  if (flagBattarey) {
-    if (flagTurnOn) {
-      flagTurnOn = false;
-    } else {
-      flagTurnOn = true;
-    }
-  }
+    if (!flagBroadcasting) {
+      socket.emit("stream", {
+        audioChunks: 0,
+        frequency: userFrequencys[chanel],
+        beep: false,
+      });
+      clearInterval(interval);
+    } else
+      socket.emit("stream", {
+        audioChunks: 0,
+        frequency: userFrequencys[chanel],
+        beep: true,
+      });
+  }, beepLength);
 }
 
 console.error = () => {};

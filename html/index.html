@@ -26,8 +26,14 @@
         <div class="broadcast_button_bottom_bolt"></div>
       </div>
       <div class="controls_call_broadcast_close">
-        <p class="call_text">ВЫЗ</p>
-        <div class="call"></div>
+        <p class="call_text">
+          ВЫЗ
+        </p>
+        <div
+          class="call"
+          onmousedown="isBroadcastingBeep()"
+          onmouseup="isNotBroadcastingBeep()"
+        ></div>
         <p class="broadcast_text">
           ПРД
         </p>
@@ -51,6 +57,13 @@
       <div class="antenna_button"></div>
       <p>Гарнитура</p>
       <div class="headset_button"></div>
+    </div>
+
+    <div class="records_button" title="Записи"></div>
+
+    <div class="records_block_not_active">
+      <h1 class="records_head_text">Записи по частотам и времени</h1>
+      <div class="records_block"></div>
     </div>
 
     <div class="radiostation">

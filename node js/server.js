@@ -42,13 +42,5 @@ io.on("connection", (socket) => {
   });
 });
 
-process.on("exit", function () {
-  console.log("Сервер был выключен...");
-});
-
-process.on("SIGINT", function () {
-  process.exit(0);
-});
-
 console.log(`Сервер запущен на порте: ${port}`);
 server.listen(port);

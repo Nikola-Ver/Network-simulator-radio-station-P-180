@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/menu.css" />
     <title>Радиостанция Р-180</title>
   </head>
   <body>
@@ -72,7 +73,13 @@
       </div>
       <div class="radiostation_body">
         <div class="radiostation_power_button"></div>
-        <div class="radiostation_display"></div>
+        <div class="radiostation_display">
+          <div class="main_menu_not_active">
+            <div class="top_block"></div>
+            <div class="active_zone"></div>
+            <div class="bottom_block"></div>
+          </div>
+        </div>
         <div class="radiostation_button_block">
           <div class="radiostation_button" id="button_ok">✓</div>
           <div class="radiostation_button" id="button_menu">M</div>
@@ -105,5 +112,6 @@
     <script type="text/javascript" src="../js/modules/socket.io.js"></script>
     <script src="../js/clientLogicBroadcasting.js"></script>
     <script src="../js/clientControls.js"></script>
+    <script src="../js/menuRadiostation.js"></script>
   </body>
 </html>

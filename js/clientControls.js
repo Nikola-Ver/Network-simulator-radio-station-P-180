@@ -26,9 +26,11 @@ connectControlsButton.addEventListener("click", openOrCloseConnectControls);
 
 function openOrCloseConnectControls() {
   if (statusConnectControls) {
+    connectControlsButton.className = "connect_controls_button_close";
     divConnectControls.className = "connect_controls_block_open";
     statusConnectControls = false;
   } else {
+    connectControlsButton.className = "connect_controls_button";
     divConnectControls.className = "connect_controls_block_close";
     statusConnectControls = true;
   }
@@ -65,44 +67,47 @@ const [divHeadset] = document.getElementsByClassName(
 );
 
 function battareyFunc() {
-  if (flagBattarey) {
+  if (menuRadiostation.statusBattarey) {
     divBattarey.className = "radiostation_accum_not_active";
-    flagBattarey = false;
-    flagTurnOn = false;
-    flagBroadcasting = false;
+    menuRadiostation.battareyOff();
+    menuRadiostation.broadcastingOff();
+    menuRadiostation.stopWorking(); // import from radiostationMenu
   } else {
     divBattarey.className = "radiostation_accum_active";
-    flagBattarey = true;
+    menuRadiostation.battareyOn();
   }
 }
 
 function antennaFunc() {
-  if (flagAntenna) {
+  if (menuRadiostation.statusAntenna) {
     divAntenna.className = "radiostation_antenna_not_active";
-    flagAntenna = false;
-    flagBroadcasting = false;
+    menuRadiostation.antennaOff();
+    menuRadiostation.broadcastingOff();
+    menuRadiostation.antennaOff();
+    menuRadiostation.antennaOff();
   } else {
     divAntenna.className = "radiostation_antenna_active";
-    flagAntenna = true;
+    menuRadiostation.antennaOn();
+    menuRadiostation.antennaOn();
   }
 }
 
 function headsetFunc() {
-  if (flagHeadset) {
+  if (menuRadiostation.statusHeadset) {
     divHeadset.className = "controls_call_broadcast_close";
-    flagHeadset = false;
+    menuRadiostation.headsetOff();
   } else {
     divHeadset.className = "controls_call_broadcast_open";
-    flagHeadset = true;
+    menuRadiostation.headsetOn();
   }
 }
 
 function turnRadiostation() {
-  if (flagBattarey) {
-    if (flagTurnOn) {
-      flagTurnOn = false;
+  if (menuRadiostation.statusBattarey) {
+    if (menuRadiostation.statusWorking) {
+      menuRadiostation.stopWorking();
     } else {
-      flagTurnOn = true;
+      menuRadiostation.startWorking();
     }
   }
 }

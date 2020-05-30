@@ -1,0 +1,30 @@
+.main_menu_active {
+  width: 100%;
+  height: 100%;
+  background: #272727;
+}
+
+.main_menu_not_active {
+  opacity: 0;
+}
+
+.top_block {
+  height: 15%;
+  width: 100%;
+  background: white;
+  overflow: hidden;
+}
+
+.active_zone {
+  height: 70%;
+  width: 100%;
+  background: green;
+  overflow: hidden;
+}
+
+.bottom_block {
+  height: 15%;
+  width: 100%;
+  background: white;
+  overflow: hidden;
+}

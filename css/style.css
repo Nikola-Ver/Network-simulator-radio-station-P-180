@@ -58,6 +58,7 @@ body {
   margin: auto;
   margin-bottom: 0;
   margin-top: calc(var(--coeff-size-station) / 5 * 12px);
+  overflow: hidden;
 }
 
 .radiostation_button_block {
@@ -312,12 +313,13 @@ body {
 
 .records_button,
 .records_button_close,
-.connect_controls_button {
+.connect_controls_button,
+.connect_controls_button_close {
   background: url("../img/socket.png") no-repeat;
   width: calc(var(--coeff-size-station) * 1.5px);
   height: calc(var(--coeff-size-station) * 1.5px);
   background-color: white;
-  background-size: 90%;
+  background-size: 75%;
   box-shadow: inset 0 0 10px 0 black;
   font-size: calc(var(--coeff-size-station) / 40 * 18px);
   text-align: center;
@@ -326,6 +328,7 @@ body {
   color: white;
   border-radius: 100%;
   position: fixed;
+  background-position: calc(var(--coeff-size-station) / 45 * 11px);
   padding: calc(var(--coeff-size-station) / 20 * 5px);
   padding-bottom: 0;
   padding-top: calc(var(--coeff-size-station) / 20 * 7px);
@@ -339,8 +342,8 @@ body {
   transition: 0.2s;
 }
 
-.records_button_close,
-.records_button {
+.records_button,
+.records_button_close {
   background: url("../img/records.png") no-repeat;
   background-color: white;
   background-size: 75%;
@@ -350,13 +353,15 @@ body {
   left: 1%;
 }
 
-.records_button_close {
+.records_button_close,
+.connect_controls_button_close {
   background: url("../img/close.png") no-repeat;
   background-color: white;
   background-size: 50%;
   background-position: calc(var(--coeff-size-station) / 45 * 22px);
 }
 
+.connect_controls_button_close:active,
 .records_button_close:active,
 .records_button:active,
 .connect_controls_button:active,
@@ -516,7 +521,8 @@ body::-webkit-scrollbar-thumb {
   .connect_controls_block_open div,
   .connect_controls_block_close div,
   .records_button,
-  .records_button_close {
+  .records_button_close,
+  .connect_controls_button_close {
     cursor: auto;
   }
 
@@ -527,6 +533,7 @@ body::-webkit-scrollbar-thumb {
   }
 
   .connect_controls_button,
+  .connect_controls_button_close,
   .records_button,
   .records_button_close {
     bottom: 2%;

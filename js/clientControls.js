@@ -131,3 +131,9 @@ function openOrCloseRecords() {
     flagRecordsBlock = true;
   }
 }
+
+window.addEventListener("load", () => {
+  const [loading] = document.getElementsByClassName("loading");
+  loading.className = "loaded";
+  document.body.className = "";
+});

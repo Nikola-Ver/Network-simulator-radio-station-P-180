@@ -131,7 +131,8 @@ socket.on("recording", async (record) => {
   audioTag.controls = true;
   audioTag.src = audioUrl;
 
-  text.textContent = getTime(date) + " (" + String(record.frequency) + "МГц):";
+  text.textContent =
+    getTime(date) + " (" + String((record.frequency + 2400) / 80) + "МГц):";
 
   block.className = "audio_block";
   block.appendChild(text);

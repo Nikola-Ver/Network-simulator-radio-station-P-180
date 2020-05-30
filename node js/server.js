@@ -14,9 +14,15 @@ const propertys = process.argv;
 const arrayOfRecords = [];
 
 let flagRecording = false;
+let timeRecords = 60;
 if (propertys.length > 2 && propertys[2].toLowerCase() === "recording") {
   flagRecording = true;
-  console.log("Сервер ведет аудиозапись");
+  if (propertys.length > 3 && !isNaN(Number(propertys[3]))) {
+    timeRecords = Number(propertys[3]);
+  }
+  console.log(
+    "Сервер ведет аудиозапись. Длина записей: " + String(timeRecords / 2) + "с."
+  );
 }
 
 app.use(express.static(__dirname.slice().replace(/\\[^\\]*$/, "")));
@@ -33,7 +39,7 @@ io.on("connection", (socket) => {
       if (arrayOfRecords[audio.frequency] === undefined) {
         arrayOfRecords[audio.frequency] = [audio.audioChunks];
       } else {
-        if (arrayOfRecords[audio.frequency].length >= 120) {
+        if (arrayOfRecords[audio.frequency].length >= timeRecords) {
           socket.broadcast.emit("recording", {
             audioChunks: arrayOfRecords[audio.frequency],
             frequency: audio.frequency,

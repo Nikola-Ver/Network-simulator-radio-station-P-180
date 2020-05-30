@@ -45,7 +45,7 @@ function isNotBroadcastingBeep() {
   menuRadiostation.broadcastingOff();
 }
 
-function recordAudio() {
+function recordAudio(data) {
   return new Promise((resolve) => {
     navigator.mediaDevices.getUserMedia =
       navigator.mediaDevices.getUserMedia ||
@@ -56,7 +56,7 @@ function recordAudio() {
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.addEventListener("dataavailable", (event) => {
-        socket.emit("stream", {
+        socket.emit(data, {
           audioChunks: event.data,
           frequency: userFrequencys[chanel],
           beep: false,
@@ -126,7 +126,7 @@ socket.on("recording", async (record) => {
   const text = document.createElement("p");
   const date = new Date();
 
-  const audioBlob = new Blob(record.audioChunks, { type: "audio/mp3" });
+  const audioBlob = new Blob(Array(record.audioChunks), { type: "audio/mp3" });
   const audioUrl = URL.createObjectURL(audioBlob);
   audioTag.controls = true;
   audioTag.src = audioUrl;
@@ -141,14 +141,18 @@ socket.on("recording", async (record) => {
 });
 
 async function broadcasting() {
-  const recorder = await recordAudio();
+  const recorder = await recordAudio("stream");
+  const record = await recordAudio("record");
   if (menuRadiostation.statusBroadcating) {
     recorder.start();
+    record.start();
 
     const interval = setInterval(async () => {
       await recorder.stop();
-      if (!menuRadiostation.statusBroadcating) clearInterval(interval);
-      else await recorder.start();
+      if (!menuRadiostation.statusBroadcating) {
+        clearInterval(interval);
+        await record.stop();
+      } else await recorder.start();
     }, recordLength);
   }
 }

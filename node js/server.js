@@ -20,6 +20,11 @@ if (propertys.length > 2 && propertys[2].toLowerCase() === "recording") {
 }
 
 app.use(express.static(__dirname.slice().replace(/\\[^\\]*$/, "")));
+
+app.use("/", (req, res) => {
+  res.redirect("/html/index.html");
+});
+
 io.on("connection", (socket) => {
   socket.on("stream", async (audio) => {
     socket.broadcast.emit("stream", audio);

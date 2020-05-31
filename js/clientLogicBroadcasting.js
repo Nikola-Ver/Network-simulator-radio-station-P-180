@@ -107,9 +107,6 @@ socket.on("recording", async (record) => {
 });
 
 (async () => {
-  const recorder = await recordAudio("stream");
-  const record = await recordAudio("record");
-
   broadcastButton.addEventListener("touchstart", isBroadcasting);
   broadcastButton.addEventListener("touchend", isNotBroadcasting);
   _broadcastButton.addEventListener("touchstart", isBroadcasting);
@@ -124,9 +121,8 @@ socket.on("recording", async (record) => {
   callButton.addEventListener("mousedown", isBroadcastingBeep);
   callButton.addEventListener("mouseup", isNotBroadcastingBeep);
 
-  function selectChanel() {
-    chanel = Number(document.getElementById("chanel").value);
-  }
+  const recorder = await recordAudio("stream");
+  const record = await recordAudio("record");
 
   function isBroadcasting() {
     if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {

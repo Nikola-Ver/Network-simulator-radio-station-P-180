@@ -8,42 +8,6 @@ const beep = new Audio("../music/beep.mp3");
 
 let userFrequencys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let chanel = 0;
-broadcasting();
-
-broadcastButton.addEventListener("touchstart", isBroadcasting);
-broadcastButton.addEventListener("touchend", isNotBroadcasting);
-_broadcastButton.addEventListener("touchstart", isBroadcasting);
-_broadcastButton.addEventListener("touchend", isNotBroadcasting);
-callButton.addEventListener("touchstart", isBroadcastingBeep);
-callButton.addEventListener("touchend", isNotBroadcastingBeep);
-
-function selectChanel() {
-  chanel = Number(document.getElementById("chanel").value);
-}
-
-function isBroadcasting() {
-  if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {
-    if (menuRadiostation.statusBeep) stopBeep();
-    menuRadiostation.broadcastingOn();
-    broadcasting();
-  }
-}
-
-function isNotBroadcasting() {
-  menuRadiostation.broadcastingOff();
-}
-
-function isBroadcastingBeep() {
-  if (menuRadiostation.statusWorking && menuRadiostation.statusWorking) {
-    if (menuRadiostation.statusBeep) stopBeep();
-    menuRadiostation.broadcastingOn();
-    broadcastingBeep();
-  }
-}
-
-function isNotBroadcastingBeep() {
-  menuRadiostation.broadcastingOff();
-}
 
 function recordAudio(data) {
   return new Promise((resolve) => {
@@ -126,7 +90,9 @@ socket.on("recording", async (record) => {
   const text = document.createElement("p");
   const date = new Date();
 
-  const audioBlob = new Blob(Array(record.audioChunks), { type: "audio/mp3" });
+  const audioBlob = new Blob(Array(record.audioChunks), {
+    type: "audio/mp3",
+  });
   const audioUrl = URL.createObjectURL(audioBlob);
   audioTag.controls = true;
   audioTag.src = audioUrl;
@@ -140,39 +106,84 @@ socket.on("recording", async (record) => {
   divParent.appendChild(block);
 });
 
-async function broadcasting() {
+(async () => {
   const recorder = await recordAudio("stream");
   const record = await recordAudio("record");
-  if (menuRadiostation.statusBroadcating) {
-    recorder.start();
-    record.start();
 
-    const interval = setInterval(async () => {
-      await recorder.stop();
-      if (!menuRadiostation.statusBroadcating) {
-        clearInterval(interval);
-        await record.stop();
-      } else await recorder.start();
-    }, recordLength);
+  broadcastButton.addEventListener("touchstart", isBroadcasting);
+  broadcastButton.addEventListener("touchend", isNotBroadcasting);
+  _broadcastButton.addEventListener("touchstart", isBroadcasting);
+  _broadcastButton.addEventListener("touchend", isNotBroadcasting);
+  callButton.addEventListener("touchstart", isBroadcastingBeep);
+  callButton.addEventListener("touchend", isNotBroadcastingBeep);
+
+  broadcastButton.addEventListener("mousedown", isBroadcasting);
+  broadcastButton.addEventListener("mouseup", isNotBroadcasting);
+  _broadcastButton.addEventListener("mousedown", isBroadcasting);
+  _broadcastButton.addEventListener("mouseup", isNotBroadcasting);
+  callButton.addEventListener("mousedown", isBroadcastingBeep);
+  callButton.addEventListener("mouseup", isNotBroadcastingBeep);
+
+  function selectChanel() {
+    chanel = Number(document.getElementById("chanel").value);
   }
-}
 
-function broadcastingBeep() {
-  const interval = setInterval(async () => {
-    if (!menuRadiostation.statusBroadcating) {
-      socket.emit("stream", {
-        audioChunks: 0,
-        frequency: userFrequencys[chanel],
-        beep: false,
-      });
-      clearInterval(interval);
-    } else
-      socket.emit("stream", {
-        audioChunks: 0,
-        frequency: userFrequencys[chanel],
-        beep: true,
-      });
-  }, beepLength);
-}
+  function isBroadcasting() {
+    if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {
+      if (menuRadiostation.statusBeep) stopBeep();
+      menuRadiostation.broadcastingOn();
+      broadcasting();
+    }
+  }
+
+  function isNotBroadcasting() {
+    menuRadiostation.broadcastingOff();
+  }
+
+  function isBroadcastingBeep() {
+    if (menuRadiostation.statusWorking && menuRadiostation.statusWorking) {
+      if (menuRadiostation.statusBeep) stopBeep();
+      menuRadiostation.broadcastingOn();
+      broadcastingBeep();
+    }
+  }
+
+  function isNotBroadcastingBeep() {
+    menuRadiostation.broadcastingOff();
+  }
+
+  function broadcasting() {
+    if (menuRadiostation.statusBroadcating) {
+      recorder.start();
+      record.start();
+
+      const interval = setInterval(async () => {
+        await recorder.stop();
+        if (!menuRadiostation.statusBroadcating) {
+          clearInterval(interval);
+          await record.stop();
+        } else await recorder.start();
+      }, recordLength);
+    }
+  }
+
+  function broadcastingBeep() {
+    const interval = setInterval(async () => {
+      if (!menuRadiostation.statusBroadcating) {
+        socket.emit("stream", {
+          audioChunks: 0,
+          frequency: userFrequencys[chanel],
+          beep: false,
+        });
+        clearInterval(interval);
+      } else
+        socket.emit("stream", {
+          audioChunks: 0,
+          frequency: userFrequencys[chanel],
+          beep: true,
+        });
+    }, beepLength);
+  }
+})();
 
 console.error = () => {};

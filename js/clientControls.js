@@ -137,3 +137,16 @@ window.addEventListener("load", () => {
   loading.className = "loaded";
   document.body.className = "";
 });
+
+document.body.addEventListener("click", (e) => {
+  const div = e.target.closest("div");
+  if (!div && e.detail >= 3) {
+    const newImg = prompt("Ссылка на новый фон", "Введите ссылку на новый фон");
+    if (newImg.length !== 0) {
+      document.body.style.setProperty(
+        "--background",
+        'url("' + newImg.replace("\\", "\\\\") + '") no-repeat'
+      );
+    }
+  }
+});

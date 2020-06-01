@@ -7,7 +7,7 @@ const [callButton] = document.getElementsByClassName("call");
 const beep = new Audio("../music/beep.mp3");
 
 let userFrequencys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let chanel = 0;
+let channel = 0;
 
 function recordAudio(data) {
   return new Promise((resolve) => {
@@ -22,7 +22,7 @@ function recordAudio(data) {
       mediaRecorder.addEventListener("dataavailable", (event) => {
         socket.emit(data, {
           audioChunks: event.data,
-          frequency: userFrequencys[chanel],
+          frequency: userFrequencys[channel],
           beep: false,
         });
       });
@@ -52,7 +52,7 @@ socket.on("stream", async (stream) => {
     menuRadiostation.statusWorking &&
     menuRadiostation.statusAntenna
   ) {
-    if (stream.frequency === userFrequencys[chanel])
+    if (stream.frequency === userFrequencys[channel])
       try {
         if (stream.beep) {
           if (!menuRadiostation.statusBeep) {
@@ -104,6 +104,17 @@ socket.on("recording", async (record) => {
   block.appendChild(text);
   block.appendChild(audioTag);
   divParent.appendChild(block);
+});
+
+const [rightButtonChannel] = document.getElementsByClassName("arrow_right");
+const [leftButtonChannel] = document.getElementsByClassName("arrow_left");
+
+rightButtonChannel.addEventListener("click", () => {
+  if (channel > 0) channel--;
+});
+
+leftButtonChannel.addEventListener("click", () => {
+  if (channel < 15) channel++;
 });
 
 (async () => {
@@ -168,14 +179,14 @@ socket.on("recording", async (record) => {
       if (!menuRadiostation.statusBroadcating) {
         socket.emit("stream", {
           audioChunks: 0,
-          frequency: userFrequencys[chanel],
+          frequency: userFrequencys[channel],
           beep: false,
         });
         clearInterval(interval);
       } else
         socket.emit("stream", {
           audioChunks: 0,
-          frequency: userFrequencys[chanel],
+          frequency: userFrequencys[channel],
           beep: true,
         });
     }, beepLength);

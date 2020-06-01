@@ -1,5 +1,6 @@
 :root {
   --coeff-size-station: 34;
+  --background: url("../img/background.jpg") no-repeat;
 }
 
 .loading,
@@ -28,7 +29,7 @@
 }
 
 body {
-  background: url("../img/background.jpg") no-repeat;
+  background: var(--background);
   -moz-background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
@@ -111,7 +112,7 @@ body {
 }
 
 .radiostation_power_button {
-  margin-top: calc(var(--coeff-size-station) / 9 * 20px);
+  margin-top: calc(var(--coeff-size-station) / 9 * 7.2px);
   margin-right: calc(var(--coeff-size-station) / 9 * 7px);
   margin-left: auto;
   margin-bottom: 0;
@@ -405,13 +406,14 @@ body {
   position: fixed;
   right: 1%;
   left: auto;
-  top: 1%;
+  top: 35%;
   background: #52524f;
-  transition: 0.2s;
+  transition: 0.4s;
 }
 
 .connect_controls_block_close {
-  top: -100%;
+  right: calc(var(--coeff-size-station) * 4px * (-1));
+  opacity: 0;
 }
 
 .connect_controls_block_open p,
@@ -488,7 +490,7 @@ body::-webkit-scrollbar-track {
 
 .records_block::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #293328, #d5d18a);
+  background: linear-gradient(180deg, #52524f, white);
   -webkit-box-shadow: inset 0 0 6px rgb(0, 0, 0);
 }
 
@@ -520,6 +522,63 @@ body::-webkit-scrollbar-thumb {
   margin-right: 2px;
 }
 
+.arrow_block {
+  width: calc(var(--coeff-size-station) * 2px);
+  height: calc(var(--coeff-size-station) * 1.4px);
+  background: transparent;
+  margin: 0;
+  margin-right: calc(var(--coeff-size-station) * 0.9px);
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.arrow_left {
+  background: url("../img/arrow_left.png") no-repeat;
+  width: calc(var(--coeff-size-station) / 10 * 5px);
+  height: 35%;
+  background-size: 100%;
+  margin-top: auto;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: 0.2s;
+  opacity: 0;
+  margin-left: 2px;
+}
+
+.arrow_right {
+  background: url("../img/arrow_right.png") no-repeat;
+  width: calc(var(--coeff-size-station) / 10 * 5px);
+  height: 35%;
+  background-size: 100%;
+  margin-top: auto;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: 0.2s;
+  opacity: 0;
+  margin-right: 2px;
+}
+
+.arrow_block:hover .arrow_left,
+.arrow_block:hover .arrow_right {
+  opacity: 0.5;
+}
+
+.arrow_block .arrow_left:hover,
+.arrow_block .arrow_right:hover {
+  opacity: 1;
+}
+
+.arrow_block .arrow_right:active {
+  margin-right: 0;
+}
+
+.arrow_block .arrow_left:active {
+  margin-left: 0;
+}
+
 #button_cancel {
   font-size: calc(var(--coeff-size-station) / 45 * 23px);
 }
@@ -547,7 +606,9 @@ body::-webkit-scrollbar-thumb {
   .connect_controls_block_close div,
   .records_button,
   .records_button_close,
-  .connect_controls_button_close {
+  .connect_controls_button_close,
+  .arrow_left,
+  .arrow_right {
     cursor: auto;
   }
 

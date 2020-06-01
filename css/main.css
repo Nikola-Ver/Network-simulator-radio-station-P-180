@@ -309,6 +309,7 @@ body {
 
 .call_text,
 .broadcast_text {
+  text-shadow: 0 0 5px black;
   font-size: calc(var(--coeff-size-station) / 2 * 1px);
   text-align: center;
   font-family: DejaVu Sans Mono, monospace;

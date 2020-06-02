@@ -68,10 +68,33 @@
         </div>
         <div class="radiostation_power_button"></div>
         <div class="radiostation_display">
-          <div class="main_menu_not_active">
-            <div class="top_block"></div>
-            <div class="active_zone"></div>
-            <div class="bottom_block"></div>
+          <!-- Info block -->
+          <div id="top_block" class="not_active">
+            <div class="network"></div>
+            <div class="battery"></div>
+            <div class="power"></div>
+            <div class="sound_type"></div>
+            <div class="key"></div>
+            <div class="operating_mode"></div>
+            <div class="time"></div>
+          </div>
+          <!-- Menu display -->
+          <div id="active_zone" class="not_active">
+            <!-- Start menu-->
+            <div class="not_active">
+              <div class="block_channel">
+                <div id="top_text_channel">Канал</div>
+                <div id="bottom_text_channel"></div>
+              </div>
+            </div>
+            <!-- Main menu-->
+            <div class="not_active"></div>
+          </div>
+          <!-- Bottom button block -->
+          <div id="bottom_block" class="not_active">
+            <div id="left_bottom_button"></div>
+            <div id="center_bottom_button"></div>
+            <div id="right_bottom_button"></div>
           </div>
         </div>
         <div class="radiostation_button_block">
@@ -107,5 +130,6 @@
     <script src="../js/clientLogicBroadcasting.js"></script>
     <script src="../js/clientControls.js"></script>
     <script src="../js/menuRadiostation.js"></script>
+    <script src="../js/menuLogic.js"></script>
   </body>
 </html>

@@ -6,7 +6,8 @@ const [_broadcastButton] = document.getElementsByClassName("broadcast");
 const [callButton] = document.getElementsByClassName("call");
 const beep = new Audio("../music/beep.mp3");
 
-let userFrequencys = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let channel = 0;
 
 function recordAudio(data) {
@@ -22,7 +23,7 @@ function recordAudio(data) {
       mediaRecorder.addEventListener("dataavailable", (event) => {
         socket.emit(data, {
           audioChunks: event.data,
-          frequency: userFrequencys[channel],
+          frequency: userFrequencysOut[channel],
           beep: false,
         });
       });
@@ -52,7 +53,7 @@ socket.on("stream", async (stream) => {
     menuRadiostation.statusWorking &&
     menuRadiostation.statusAntenna
   ) {
-    if (stream.frequency === userFrequencys[channel])
+    if (stream.frequency === userFrequencysIn[channel])
       try {
         if (stream.beep) {
           if (!menuRadiostation.statusBeep) {
@@ -106,17 +107,6 @@ socket.on("recording", async (record) => {
   divParent.appendChild(block);
 });
 
-const [rightButtonChannel] = document.getElementsByClassName("arrow_right");
-const [leftButtonChannel] = document.getElementsByClassName("arrow_left");
-
-rightButtonChannel.addEventListener("click", () => {
-  if (channel > 0) channel--;
-});
-
-leftButtonChannel.addEventListener("click", () => {
-  if (channel < 15) channel++;
-});
-
 (async () => {
   broadcastButton.addEventListener("touchstart", isBroadcasting);
   broadcastButton.addEventListener("touchend", isNotBroadcasting);
@@ -148,7 +138,7 @@ leftButtonChannel.addEventListener("click", () => {
   }
 
   function isBroadcastingBeep() {
-    if (menuRadiostation.statusWorking && menuRadiostation.statusWorking) {
+    if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {
       if (menuRadiostation.statusBeep) stopBeep();
       menuRadiostation.broadcastingOn();
       broadcastingBeep();
@@ -179,14 +169,14 @@ leftButtonChannel.addEventListener("click", () => {
       if (!menuRadiostation.statusBroadcating) {
         socket.emit("stream", {
           audioChunks: 0,
-          frequency: userFrequencys[channel],
+          frequency: userFrequencysOut[channel],
           beep: false,
         });
         clearInterval(interval);
       } else
         socket.emit("stream", {
           audioChunks: 0,
-          frequency: userFrequencys[channel],
+          frequency: userFrequencysOut[channel],
           beep: true,
         });
     }, beepLength);

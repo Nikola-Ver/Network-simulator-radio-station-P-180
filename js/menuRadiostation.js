@@ -86,23 +86,26 @@ function processKey(keyCode) {
     keyCode = keyCode.replace(/Numpad(?=[0-9])/gi, "Digit");
     keyCode = keyCode.replace("NumpadEnter", "Enter");
     const currentPosition = menu(
-      menuRadiostation.currentDirectory,
-      menuRadiostation.posistion,
+      menuRadiostation.currentMenu,
+      menuRadiostation.position,
       keyCode
     );
-    menuRadiostation.posistion = currentPosition.posistion;
 
-    if (currentPosition.currentMenu !== menuRadiostation.currentMenu) {
-      menuImplementation.closeCurrentMenu();
-      menuImplementation.showMenu(currentPosition.currentMenu);
-      menuRadiostation.currentDirectory = currentPosition.currentDirectory;
-      menuRadiostation.currentMenu = currentPosition.currentMenu;
-      menuRadiostation.posistion = 0;
+    if (currentPosition) {
+      menuRadiostation.position = currentPosition.position;
+
+      if (currentPosition.currentMenu !== menuRadiostation.currentMenu) {
+        menuImplementation.closeCurrentMenu();
+        menuImplementation.showMenu(currentPosition.currentMenu);
+        menuRadiostation.currentMenu = currentPosition.currentMenu;
+        menuRadiostation.position = 0;
+      }
     }
   }
 }
 
 const menuRadiostation = {
+  blocking: true,
   statusWorking: false,
   statusHeadset: false,
   statusAntenna: false,
@@ -110,8 +113,7 @@ const menuRadiostation = {
   statusBroadcating: false,
   statusBeep: false,
   statusTime: false,
-  posistion: 0,
-  currentDirectory: [-1, -1, -1],
+  position: 0,
   speakVolume: 24,
   volume: 24,
   channel: 0,
@@ -136,6 +138,10 @@ const menuRadiostation = {
     menuImplementation.shutDown();
     this.statusWorking = false;
   },
+
+  block() {},
+
+  unblock() {},
 
   headsetOn() {
     document
@@ -235,8 +241,18 @@ const menuImplementation = {
       case 0:
         this.changeTextButton("", "МЕНЮ", "");
         break;
+
       case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
         this.changeTextButton("Выбор", "", "Выход");
+        break;
+
+      case 7:
+      case 8:
+        this.changeTextButton("", "", "Выход");
         break;
     }
   },

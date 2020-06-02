@@ -89,13 +89,57 @@
             </div>
             <!-- Main menu-->
             <div class="not_active">
-              <div class="menu_block">
+              <div class="menu_block" id="main_menu">
                 <div class="top_text_menu">Меню</div>
-                <div class="menu_point"></div>
-                <div class="menu_point"></div>
-                <div class="menu_point"></div>
-                <div class="menu_point"></div>
-                <div class="menu_point"></div>
+                <div class="menu_point" id="block">Канал</div>
+                <div class="menu_point" id="current_position">Параметры</div>
+                <div class="menu_point" id="">Инфо</div>
+                <div class="menu_point" id="">Доступ</div>
+                <div class="menu_point" id="">Тест</div>
+              </div>
+            </div>
+            <div class="not_active"></div>
+            <div class="not_active">
+              <!-- Parameters menu -->
+              <div class="menu_block" id="parameters_menu">
+                <div class="top_text_menu">Параметры</div>
+                <div class="menu_point" id="current_position">Микрофон</div>
+                <div class="menu_point" id="">Автоблок</div>
+                <div class="menu_point" id="">Подсветка клав</div>
+                <div class="menu_point" id="">Выключение экрана</div>
+              </div>
+            </div>
+            <!-- Info menu -->
+            <div class="not_active">
+              <div class="menu_block" id="info_menu">
+                <div class="top_text_menu">Инфо</div>
+                <div class="menu_point" id="current_position">Температура</div>
+                <div class="menu_point" id="">Версия</div>
+              </div>
+            </div>
+            <!-- Access menu -->
+            <div class="not_active">
+              <div class="menu_block" id="access_menu">
+                <div class="top_text_menu">Доступ</div>
+                <div class="menu_point" id="current_position">Пользователь</div>
+                <div class="menu_point" id="">Обзор</div>
+                <div class="menu_point" id="">Настройка</div>
+                <div class="menu_point" id="">Смена пароля</div>
+              </div>
+            </div>
+            <div class="not_active"></div>
+            <div class="not_active">
+              <div class="menu_block" id="temperature_menu">
+                <div class="top_text_menu">Температура</div>
+                <div class="text_info">Текущая<br /><br />35 C</div>
+              </div>
+            </div>
+            <div class="not_active">
+              <div class="menu_block" id="version_menu">
+                <div class="top_text_menu">Версия</div>
+                <div class="text_info">
+                  ARM: V4.9<br />DSP: V2.55<br />PIC: V3.5
+                </div>
               </div>
             </div>
           </div>
@@ -141,6 +185,5 @@
     <script src="../js/menuRadiostation.js"></script>
     <script src="../js/menuLogic.js"></script>
     <script src="../js/menuLogic.js"></script>
-    <script src="../js/menuShowFunction.js"></script>
   </body>
 </html>

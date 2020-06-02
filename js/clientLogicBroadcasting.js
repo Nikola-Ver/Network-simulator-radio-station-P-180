@@ -130,7 +130,11 @@ socket.on("recording", async (record) => {
   const record = await recordAudio("record");
 
   function isBroadcasting() {
-    if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {
+    if (
+      menuRadiostation.statusAntenna &&
+      menuRadiostation.statusWorking &&
+      !menuRadiostation.blocking
+    ) {
       if (menuRadiostation.statusBeep) stopBeep();
       menuRadiostation.broadcastingOn();
       broadcasting();
@@ -142,7 +146,11 @@ socket.on("recording", async (record) => {
   }
 
   function isBroadcastingBeep() {
-    if (menuRadiostation.statusAntenna && menuRadiostation.statusWorking) {
+    if (
+      menuRadiostation.statusAntenna &&
+      menuRadiostation.statusWorking &&
+      !menuRadiostation.blocking
+    ) {
       if (menuRadiostation.statusBeep) stopBeep();
       menuRadiostation.broadcastingOn();
       broadcastingBeep();

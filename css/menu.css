@@ -167,7 +167,7 @@
   overflow: hidden;
 }
 
-.menu_block .menu_point {
+.menu_point {
   width: 80%;
   height: 13%;
   margin: auto;
@@ -175,7 +175,7 @@
   background: rgb(240, 240, 240);
   border: thin solid black;
   border-radius: 1px;
-  font-size: 9px;
+  font-size: 8px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
@@ -195,9 +195,25 @@
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
+  position: relative;
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;
+}
+
+.text_info {
+  font-size: 9px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  position: relative;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+#block {
+  color: darkgray;
 }
 
 #left_bottom_button,
@@ -216,6 +232,14 @@
   user-select: none;
 }
 
+#current_position {
+  color: red;
+}
+
+#scroll_main_menu {
+  margin-bottom: -17%;
+}
+
 @media screen and (max-height: 900px) {
   #left_bottom_button,
   #center_bottom_button,
@@ -232,11 +256,16 @@
     font-size: 6px;
   }
 
-  .top_text_menu {
+  .top_text_menu,
+  .text_info {
     font-size: 6px;
   }
 
   .time {
     font-size: 6px;
+  }
+
+  .menu_point {
+    font-size: 4.5px;
   }
 }

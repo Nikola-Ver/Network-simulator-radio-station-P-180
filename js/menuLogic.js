@@ -1,13 +1,37 @@
 // -1 = current directory
 
-function menu(directory) {
+function menu(directory, posistion, keyCode) {
   switch (directory[0]) {
     case -1:
-      break;
+      if (keyCode === "KeyM")
+        return {
+          currentDirectory: [0, -1, -1],
+          currentMenu: 1,
+          posistion: 0,
+        };
+      return {
+        currentDirectory: [-1, -1, -1],
+        currentMenu: 0,
+        posistion: posistion,
+      };
+
     case 0:
       switch (directory[1]) {
         case -1:
-          break;
+          switch (keyCode) {
+            case "Escape":
+              return {
+                currentDirectory: [-1, -1, -1],
+                currentMenu: 0,
+                posistion: posistion,
+              };
+          }
+          return {
+            currentDirectory: [0, -1, -1],
+            currentMenu: 1,
+            posistion: posistion,
+          };
+
         case 0:
           break;
         case 1:

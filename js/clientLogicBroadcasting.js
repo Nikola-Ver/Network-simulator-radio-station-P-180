@@ -25,6 +25,7 @@ function recordAudio(data) {
           audioChunks: event.data,
           frequency: userFrequencysOut[channel],
           beep: false,
+          speakVolume: menuRadiostation.speakVolume,
         });
       });
 
@@ -57,6 +58,7 @@ socket.on("stream", async (stream) => {
       try {
         if (stream.beep) {
           if (!menuRadiostation.statusBeep) {
+            beep.volume = menuRadiostation.volume / 24;
             beep.play();
             menuRadiostation.beepOn();
           } else {
@@ -69,6 +71,8 @@ socket.on("stream", async (stream) => {
             const audioBlob = new Blob(Array(stream.audioChunks));
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
+            audio.volume =
+              (stream.speakVolume * menuRadiostation.volume) / (24 * 24);
             await audio.play();
           }
         }

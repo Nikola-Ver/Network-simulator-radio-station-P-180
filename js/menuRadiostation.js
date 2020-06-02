@@ -82,40 +82,23 @@ document.addEventListener("keydown", (e) => {
 });
 
 function processKey(keyCode) {
-  keyCode = keyCode.replace(/Numpad(?=[0-9])/gi, "Digit");
-  keyCode = keyCode.replace("NumpadEnter", "Enter");
+  if (menuRadiostation.statusWorking) {
+    keyCode = keyCode.replace(/Numpad(?=[0-9])/gi, "Digit");
+    keyCode = keyCode.replace("NumpadEnter", "Enter");
+    const currentPosition = menu(
+      menuRadiostation.currentDirectory,
+      menuRadiostation.posistion,
+      keyCode
+    );
+    menuRadiostation.posistion = currentPosition.posistion;
 
-  switch (keyCode) {
-    case "Enter":
-      break;
-    case "KeyM":
-      break;
-    case "Escape":
-      break;
-    case "Digit0":
-      break;
-    case "Digit1":
-      break;
-    case "Digit2":
-      break;
-    case "Digit3":
-      break;
-    case "Digit4":
-      break;
-    case "Digit5":
-      break;
-    case "Digit6":
-      break;
-    case "Digit7":
-      break;
-    case "Digit8":
-      break;
-    case "Digit9":
-      break;
-    case "NumpadDivide":
-      break;
-    case "NumpadMultiply":
-      break;
+    if (currentPosition.currentMenu !== menuRadiostation.currentMenu) {
+      menuImplementation.closeCurrentMenu();
+      menuImplementation.showMenu(currentPosition.currentMenu);
+      menuRadiostation.currentDirectory = currentPosition.currentDirectory;
+      menuRadiostation.currentMenu = currentPosition.currentMenu;
+      menuRadiostation.posistion = 0;
+    }
   }
 }
 
@@ -127,7 +110,10 @@ const menuRadiostation = {
   statusBroadcating: false,
   statusBeep: false,
   statusTime: false,
-  volume: 10,
+  posistion: 0,
+  currentDirectory: [-1, -1, -1],
+  speakVolume: 24,
+  volume: 24,
   channel: 0,
   currentMenu: 0,
   listOfMenu: document.getElementById("active_zone").children,
@@ -231,6 +217,7 @@ const menuImplementation = {
   timeInterval: null,
 
   showStartMenu() {
+    menuImplementation.closeCurrentMenu();
     menuRadiostation.listOfMenuElements.forEach((e) => {
       e.className = "active";
     });
@@ -240,6 +227,18 @@ const menuImplementation = {
     if (channel < 9)
       menuRadiostation.divChannel.textContent = "0" + String(channel + 1);
     else menuRadiostation.divChannel.textContent = channel + 1;
+  },
+
+  showMenu(codeMenu) {
+    menuRadiostation.listOfMenu[codeMenu].className = "active";
+    switch (codeMenu) {
+      case 0:
+        this.changeTextButton("", "МЕНЮ", "");
+        break;
+      case 1:
+        this.changeTextButton("Выбор", "", "Выход");
+        break;
+    }
   },
 
   async startTime() {

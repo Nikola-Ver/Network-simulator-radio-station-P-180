@@ -1,7 +1,21 @@
 let speakVolumeLevel = menuRadiostation.speakVolume;
 let autoBlocking = null;
+let timerDisplay = 0;
 let flagAutoBlock = false;
 let flagLightKeyboard = false;
+let timerDisplayID = null;
+let password = "";
+let currentChannel = 0;
+
+function getTextFrequency(frequency) {
+  let frequencyNum = ((frequency + 2400) / 80) * 1000;
+  let numAfterPoint = String((frequencyNum * 10) % 10);
+  if (numAfterPoint !== "0") numAfterPoint = "";
+  else numAfterPoint = "." + numAfterPoint;
+  let textFrequency = "";
+  textFrequency += String(frequencyNum) + numAfterPoint;
+  return textFrequency;
+}
 
 function rmeoveAllId(divCollection, pos) {
   for (let i = pos; i < divCollection.length; i++)
@@ -9,7 +23,7 @@ function rmeoveAllId(divCollection, pos) {
 }
 
 function changeVolume(graph, digit, volume) {
-  divCollection = document.getElementById(graph);
+  let divCollection = document.getElementById(graph);
   divCollection.textContent = "[ ";
   for (i = 0; i < 8; i++) {
     if (i <= volume / 3) divCollection.textContent += "| ";
@@ -30,6 +44,12 @@ function menu(currentMenu, position, keyCode) {
   if (autoBlocking) {
     clearInterval(autoBlocking);
     autoBlocking = autoBlock();
+  }
+
+  if (timerDisplayID) {
+    timerDisplayID = menuRadiostation.clearTimerDisplay(timerDisplayID);
+    timerDisplayID = menuRadiostation.setTimerDisplay(timerDisplay);
+    menuImplementation.turnOnDisplay();
   }
 
   let pos = position;
@@ -99,6 +119,12 @@ function menu(currentMenu, position, keyCode) {
                 position,
               };
             case 4:
+              divCollection = document.getElementById("test_menu_text");
+              if (menuRadiostation.blocking)
+                divCollection.textContent = "Радиостанция заблокирована";
+              else
+                divCollection.textContent =
+                  "Радиостанция готова к использованию";
               return {
                 currentMenu: 6,
                 position,
@@ -137,7 +163,67 @@ function menu(currentMenu, position, keyCode) {
       break;
 
     case 2:
-      return null;
+      divCollection = document.getElementById("settings_channel").children;
+      switch (keyCode) {
+        case "Escape":
+          divCollection[0].id = "";
+          rmeoveAllId(divCollection, 1);
+          divCollection[1].id = "current_position";
+          return {
+            currentMenu: 1,
+            position,
+          };
+
+        case "Enter":
+          divCollection[0].id = "";
+          rmeoveAllId(divCollection, 1);
+          divCollection[position + 1].id = "current_position";
+          switch (position) {
+            case 0:
+              currentChannel = channel;
+              divCollection = document.getElementById("analogue_modulation");
+              divCollection.textContent =
+                userModulation[currentChannel] === 0 ? "АМ" : "ЧМ";
+              return {
+                currentMenu: 16,
+                position,
+              };
+            case 1:
+              return {
+                currentMenu: 2,
+                position,
+              };
+            case 2:
+              return {
+                currentMenu: 2,
+                position,
+              };
+            case 3:
+              return {
+                currentMenu: 2,
+                position,
+              };
+          }
+
+        case "Digit2":
+          pos = position - 1 >= 0 ? position - 1 : position;
+          rmeoveAllId(divCollection, 1);
+          divCollection[pos + 1].id = "current_position";
+          return {
+            currentMenu,
+            position: pos,
+          };
+
+        case "Digit8":
+          pos = position + 1 < 4 ? position + 1 : position;
+          rmeoveAllId(divCollection, 1);
+          divCollection[pos + 1].id = "current_position";
+          return {
+            currentMenu,
+            position: pos,
+          };
+      }
+      break;
 
     case 3:
       divCollection = document.getElementById("parameters_menu").children;
@@ -179,6 +265,8 @@ function menu(currentMenu, position, keyCode) {
                 position,
               };
             case 3:
+              divCollection = document.getElementById("text_timer");
+              divCollection.textContent = timerDisplay;
               return {
                 currentMenu: 12,
                 position,
@@ -272,13 +360,27 @@ function menu(currentMenu, position, keyCode) {
           divCollection[1].id = "current_position";
           switch (position) {
             case 0:
+              menuRadiostation.block();
               return {
-                currentMenu: 7,
+                currentMenu: 5,
                 position,
               };
+
             case 1:
               return {
-                currentMenu: 8,
+                currentMenu: 13,
+                position,
+              };
+
+            case 2:
+              return {
+                currentMenu: 14,
+                position,
+              };
+
+            case 3:
+              return {
+                currentMenu: 15,
                 position,
               };
           }
@@ -293,7 +395,10 @@ function menu(currentMenu, position, keyCode) {
           };
 
         case "Digit8":
-          pos = position + 1 < 4 ? position + 1 : position;
+          if (menuRadiostation.blocking)
+            pos = position + 1 < 3 ? position + 1 : position;
+          else pos = position + 1 < 4 ? position + 1 : position;
+
           rmeoveAllId(divCollection, 1);
           divCollection[pos + 1].id = "current_position";
           return {
@@ -304,7 +409,11 @@ function menu(currentMenu, position, keyCode) {
       break;
 
     case 6:
-      return null;
+      if (keyCode === "Escape")
+        return {
+          currentMenu: 1,
+          position,
+        };
 
     case 7:
     case 8:
@@ -381,19 +490,17 @@ function menu(currentMenu, position, keyCode) {
             position,
           };
 
-        case "Digit2":
-          flagAutoBlock = !flagAutoBlock;
-          if (flagAutoBlock) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+        case "NumpadMultiply":
+          flagAutoBlock = true;
+          divCollection.textContent = "Вкл";
           return {
             currentMenu: 10,
             position,
           };
 
-        case "Digit8":
-          flagAutoBlock = !flagAutoBlock;
-          if (flagAutoBlock) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+        case "NumpadDivide":
+          flagAutoBlock = false;
+          divCollection.textContent = "Выкл";
           return {
             currentMenu: 10,
             position,
@@ -420,19 +527,17 @@ function menu(currentMenu, position, keyCode) {
             position,
           };
 
-        case "Digit2":
-          flagLightKeyboard = !flagLightKeyboard;
-          if (flagLightKeyboard) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+        case "NumpadMultiply":
+          flagLightKeyboard = true;
+          divCollection.textContent = "Вкл";
           return {
             currentMenu: 11,
             position,
           };
 
-        case "Digit8":
-          flagLightKeyboard = !flagLightKeyboard;
-          if (flagLightKeyboard) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+        case "NumpadDivide":
+          flagLightKeyboard = false;
+          divCollection.textContent = "Выкл";
           return {
             currentMenu: 11,
             position,
@@ -441,42 +546,185 @@ function menu(currentMenu, position, keyCode) {
       break;
 
     case 12:
-      divCollection = document.getElementById("timer_display");
+      divCollection = document.getElementById("text_timer");
       switch (keyCode) {
         case "Escape":
-          if (menuRadiostation.lightKeyboard) flagLightKeyboard = true;
-          else flagLightKeyboard = false;
           return {
             currentMenu: 3,
             position,
           };
 
         case "Enter":
-          if (flagLightKeyboard) menuRadiostation.lightKeyboardOn();
-          else menuRadiostation.lightKeyboardOff();
+          if (timerDisplay === 0) {
+            if (timerDisplayID)
+              timerDisplayID = menuRadiostation.clearTimerDisplay(
+                timerDisplayID
+              );
+          } else {
+            timerDisplayID = menuRadiostation.setTimerDisplay(timerDisplay);
+          }
           return {
             currentMenu: 3,
             position,
           };
 
         case "Digit2":
-          flagLightKeyboard = !flagLightKeyboard;
-          if (flagLightKeyboard) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+          if (timerDisplay < 60) timerDisplay++;
+          divCollection.textContent = timerDisplay;
           return {
-            currentMenu: 11,
+            currentMenu: 12,
             position,
           };
 
         case "Digit8":
-          flagLightKeyboard = !flagLightKeyboard;
-          if (flagLightKeyboard) divCollection.textContent = "Вкл";
-          else divCollection.textContent = "Выкл";
+          if (timerDisplay > 0) timerDisplay--;
+          divCollection.textContent = timerDisplay;
           return {
-            currentMenu: 11,
+            currentMenu: 12,
             position,
           };
       }
+      break;
+
+    case 13:
+      divCollection = document.getElementById("password_view");
+      if (keyCode.search(/Digit/gi) !== -1 && password.length < 4) {
+        const digit = keyCode.replace("Digit", "");
+        password += digit;
+        divCollection.textContent += "#";
+      } else {
+        switch (keyCode) {
+          case "Escape":
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+
+          case "Enter":
+            if (password === menuRadiostation.passwordSetting)
+              menuRadiostation.block();
+
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 14:
+      divCollection = document.getElementById("password_setting");
+      if (keyCode.search(/Digit/gi) !== -1 && password.length < 4) {
+        const digit = keyCode.replace("Digit", "");
+        password += digit;
+        divCollection.textContent += "#";
+      } else {
+        switch (keyCode) {
+          case "Escape":
+            menuRadiostation.block();
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+
+          case "Enter":
+            if (password === menuRadiostation.passwordSetting)
+              menuRadiostation.unblock();
+            else menuRadiostation.block();
+
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 15:
+      divCollection = document.getElementById("password_change");
+      if (keyCode.search(/Digit/gi) !== -1 && password.length < 4) {
+        const digit = keyCode.replace("Digit", "");
+        password += digit;
+        divCollection.textContent += "#";
+      } else {
+        switch (keyCode) {
+          case "Escape":
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+
+          case "Enter":
+            menuRadiostation.passwordSetting = password;
+            divCollection.textContent = "";
+            password = "";
+            return {
+              currentMenu: 5,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 16:
+      divCollection = document.getElementById("text_timer");
+      switch (keyCode) {
+        case "Escape":
+          divCollection = document.getElementById(
+            "old_input_in_frequency_analogue"
+          );
+          divCollection.textContent = getTextFrequency(
+            userFrequencysIn[currentChannel]
+          );
+          return {
+            currentMenu: 17,
+            position,
+          };
+
+        case "NumpadMultiply":
+          if (userModulation[currentChannel] > 0)
+            userModulation[currentChannel]--;
+          divCollection = document.getElementById("analogue_modulation");
+          divCollection.textContent =
+            userModulation[currentChannel] === 0 ? "АМ" : "ЧМ";
+          return {
+            currentMenu: 16,
+            position,
+          };
+
+        case "NumpadDivide":
+          if (userModulation[currentChannel] < 1)
+            userModulation[currentChannel]++;
+          divCollection = document.getElementById("analogue_modulation");
+          divCollection.textContent =
+            userModulation[currentChannel] === 0 ? "АМ" : "ЧМ";
+          return {
+            currentMenu: 16,
+            position,
+          };
+      }
+      break;
+
+    case 17:
+      break;
+
+    case 18:
+      break;
+
+    case 19:
+      break;
+
+    case 20:
       break;
   }
   return null;

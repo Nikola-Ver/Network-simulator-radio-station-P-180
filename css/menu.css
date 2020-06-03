@@ -61,6 +61,7 @@
   font-size: 8px;
   margin: auto;
   margin-right: 2px;
+  margin-left: 0;
 }
 
 .battery {
@@ -107,25 +108,38 @@
   margin-right: 2px;
 }
 
-.block_channel {
-  width: 30%;
+.common_block_channel {
+  width: 100%;
   height: 45%;
   background: transparent;
   margin: 5%;
-  margin-top: 0;
-  border-radius: 5px;
   overflow: hidden;
-  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
 }
 
-#top_text_channel {
+.block_channel {
+  width: 58%;
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-left: 1%;
+}
+
+.block_channel:nth-child(1) {
+  width: 30%;
+  margin-left: 1%;
+}
+
+#top_text_channel,
+#common_top_text_channel {
   height: 42%;
   padding-top: 8%;
   width: 100%;
   margin: 0;
   background: rgba(188, 240, 245, 0.9);
   box-shadow: inset 0 0 1px 0 black;
-  font-size: 8px;
+  font-size: 7px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
@@ -134,12 +148,18 @@
   user-select: none;
 }
 
+#common_top_text_channel {
+  height: 42%;
+  padding-top: 4%;
+}
+
 #active_zone .active {
   width: 100%;
   height: 100%;
 }
 
-#bottom_text_channel {
+#bottom_text_channel,
+#bottom_text_frequency {
   height: 47%;
   padding-top: 3%;
   width: 100%;
@@ -147,7 +167,7 @@
   border-bottom: 1px solid black;
   background: white;
   box-shadow: inset 0 0 1px 0 black;
-  font-size: 8px;
+  font-size: 7px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   color: black;
@@ -167,7 +187,9 @@
   overflow: hidden;
 }
 
-.menu_point {
+.menu_point,
+.menu_point_bold,
+.menu_point_little {
   width: 80%;
   height: 13%;
   margin: auto;
@@ -182,6 +204,16 @@
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;
+  overflow: hidden;
+}
+
+.menu_point_little {
+  font-size: 6px;
+}
+
+.menu_point_bold {
+  font-weight: 600;
+  font-size: 8px;
 }
 
 .top_text_menu {
@@ -257,8 +289,10 @@
   }
 
   #top_text_channel,
-  #bottom_text_channel {
-    font-size: 6px;
+  #bottom_text_channel,
+  #common_top_text_channel,
+  #bottom_text_frequency {
+    font-size: 5px;
   }
 
   .top_text_menu,
@@ -274,6 +308,11 @@
     font-size: 6px;
   }
 
+  .menu_point_little {
+    font-size: 3.5px;
+  }
+
+  .menu_point_bold,
   .menu_point {
     font-size: 4.5px;
   }

@@ -54,7 +54,10 @@ antennaButton.addEventListener("click", antennaFunc);
 headsetButton.addEventListener("click", headsetFunc);
 radiostationAccumButton.addEventListener("click", battareyFunc);
 radiostationAntennaButton.addEventListener("click", antennaFunc);
-radiostationPowerButton.addEventListener("click", turnRadiostation);
+radiostationPowerButton.addEventListener("click", () => {
+  turnRadiostation();
+  processKey("");
+});
 
 const [divBattarey] = document.getElementsByClassName(
   "radiostation_accum_not_active"

@@ -108,6 +108,7 @@ function processKey(keyCode) {
 }
 
 const menuRadiostation = {
+  passwordSetting: "0000",
   displayTimer: null,
   lightKeyboard: false,
   blocking: true,
@@ -121,7 +122,6 @@ const menuRadiostation = {
   position: 0,
   speakVolume: 24,
   volume: 24,
-  channel: 0,
   currentMenu: 0,
   listOfMenu: document.getElementById("active_zone").children,
   listOfMenuElements: [
@@ -149,7 +149,7 @@ const menuRadiostation = {
     this.displayTimer = time;
     return setTimeout(() => {
       menuImplementation.shutDown();
-    }, time);
+    }, time * 1000);
   },
 
   clearTimerDisplay(timer) {
@@ -167,6 +167,11 @@ const menuRadiostation = {
       .getElementsByClassName("key")[0]
       .style.setProperty("--key_img", 'url("../img/key.png") no-repeat');
 
+    divCollection = document.getElementById("access_menu").children;
+    divCollection[4].id = "block";
+    divCollection = document.getElementById("frequency_call");
+    divCollection.className = "not_active";
+
     this.blocking = true;
   },
 
@@ -178,6 +183,12 @@ const menuRadiostation = {
     document
       .getElementsByClassName("key")[0]
       .style.setProperty("--key_img", "transparent");
+
+    divCollection = document.getElementById("access_menu").children;
+    divCollection[4].id = "";
+    divCollection = document.getElementById("frequency_call");
+    divCollection.className = "block_channel";
+
     this.blocking = false;
   },
 
@@ -312,17 +323,38 @@ const menuImplementation = {
         this.changeTextButton("Выбор", "", "Выход");
         break;
 
+      case 6:
       case 7:
       case 8:
         this.changeTextButton("", "", "Выход");
         break;
 
+      case 12:
+        this.changeTextButton("Ввод", "", "Отмена");
+        break;
+
       case 9:
+      case 13:
+      case 14:
+      case 15:
         this.changeTextButton("Да", "", "Нет");
         break;
 
-      case 12:
+      case 16:
+        this.changeTextButton("", "Итог", "След.");
+        break;
+
+      case 17:
+      case 18:
         this.changeTextButton("Ввод", "<-", "Отмена");
+        break;
+
+      case 19:
+        this.changeTextButton("Пред.", "Итог", "След.");
+        break;
+
+      case 20:
+        this.changeTextButton("Пред.", "Итог", "");
         break;
     }
   },
@@ -344,6 +376,12 @@ const menuImplementation = {
   closeCurrentMenu() {
     menuRadiostation.listOfMenu[menuRadiostation.currentMenu].className =
       "not_active";
+  },
+
+  turnOnDisplay() {
+    menuRadiostation.listOfMenuElements.forEach((e) => {
+      e.className = "active";
+    });
   },
 
   shutDown() {

@@ -75,16 +75,22 @@
             <div class="power"></div>
             <div class="sound_type"></div>
             <div class="key"></div>
-            <div class="operating_mode"></div>
+            <div class="operating_mode">АФ</div>
             <div class="time"></div>
           </div>
           <!-- Menu display -->
           <div id="active_zone" class="not_active">
             <!-- Start menu-->
             <div class="not_active">
-              <div class="block_channel">
-                <div id="top_text_channel">Канал</div>
-                <div id="bottom_text_channel"></div>
+              <div class="common_block_channel">
+                <div class="block_channel">
+                  <div id="top_text_channel">Канал</div>
+                  <div id="bottom_text_channel"></div>
+                </div>
+                <div class="not_active" id="frequency_call">
+                  <div id="common_top_text_channel">Адрес вызова (А)</div>
+                  <div id="bottom_text_frequency"></div>
+                </div>
               </div>
             </div>
             <!-- Main menu-->
@@ -98,7 +104,16 @@
                 <div class="menu_point" id="">Тест</div>
               </div>
             </div>
-            <div class="not_active"></div>
+            <!-- Setting channel -->
+            <div class="not_active">
+              <div class="menu_block" id="settings_channel">
+                <div class="top_text_menu">Канал</div>
+                <div class="menu_point" id="current_position">Аналог</div>
+                <div class="menu_point" id="">Аналог скан.</div>
+                <div class="menu_point" id="">Цифра ФРЧ</div>
+                <div class="menu_point" id="">Цифра ППРЧ</div>
+              </div>
+            </div>
             <!-- Parameters menu -->
             <div class="not_active">
               <div class="menu_block" id="parameters_menu">
@@ -124,10 +139,16 @@
                 <div class="menu_point" id="current_position">Пользователь</div>
                 <div class="menu_point" id="">Обзор</div>
                 <div class="menu_point" id="">Настройка</div>
-                <div class="menu_point" id="">Смена пароля</div>
+                <div class="menu_point" id="block">Смена пароля</div>
               </div>
             </div>
-            <div class="not_active"></div>
+            <div class="not_active">
+              <div class="menu_block" id="test_menu">
+                <div class="top_text_menu">Тест</div>
+                <div class="text_info"><br /></div>
+                <div class="text_info" id="test_menu_text"></div>
+              </div>
+            </div>
             <!-- Temperature menu -->
             <div class="not_active">
               <div class="menu_block" id="temperature_menu">
@@ -185,9 +206,69 @@
               <div class="menu_block" id="timer_display">
                 <div class="top_text_menu">Выключение экрана</div>
                 <div class="little_letter_text_info"><br />Таймер</div>
-                <div class="menu_point" id="text_light_keyboard">60</div>
+                <div class="menu_point" id="text_timer">0</div>
               </div>
             </div>
+            <!-- View mode -->
+            <div class="not_active">
+              <div class="menu_block">
+                <div class="top_text_menu">Обзор</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите пароль</div>
+                <div class="menu_point" id="password_view"></div>
+              </div>
+            </div>
+            <!-- Seting mode -->
+            <div class="not_active">
+              <div class="menu_block">
+                <div class="top_text_menu">Настройка</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите пароль</div>
+                <div class="menu_point" id="password_setting"></div>
+              </div>
+            </div>
+            <!-- Change password -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Смена пароля</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите новый пароль</div>
+                <div class="menu_point" id="password_change"></div>
+              </div>
+            </div>
+            <!-- Choose modulation -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Модуляция</div>
+                <div class="menu_point" id="analogue_modulation"></div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Choose frequency out -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Частота прм</div>
+                <div
+                  class="text_info"
+                  id="old_input_in_frequency_analogue"
+                ></div>
+                <div class="little_letter_text_info">
+                  Выбор [0-9]
+                </div>
+                <div class="menu_point" id="input_in_frequency_analogue">
+                  000000.0
+                </div>
+              </div>
+            </div>
+            <!-- Choose frequency in -->
           </div>
           <!-- Bottom button block -->
           <div id="bottom_block" class="not_active">

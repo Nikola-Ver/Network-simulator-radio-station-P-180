@@ -6,8 +6,9 @@ const [_broadcastButton] = document.getElementsByClassName("broadcast");
 const [callButton] = document.getElementsByClassName("call");
 const beep = new Audio("../music/beep.mp3");
 
-let userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const userModulation = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let channel = 0;
 
 function recordAudio(data) {
@@ -26,6 +27,7 @@ function recordAudio(data) {
           frequency: userFrequencysOut[channel],
           beep: false,
           speakVolume: menuRadiostation.speakVolume,
+          modulation: userModulation[channel],
         });
       });
 
@@ -54,7 +56,10 @@ socket.on("stream", async (stream) => {
     menuRadiostation.statusWorking &&
     menuRadiostation.statusAntenna
   ) {
-    if (stream.frequency === userFrequencysIn[channel])
+    if (
+      stream.frequency === userFrequencysIn[channel] &&
+      stream.modulation === userModulation[channel]
+    )
       try {
         if (stream.beep) {
           if (!menuRadiostation.statusBeep) {
@@ -102,8 +107,17 @@ socket.on("recording", async (record) => {
   audioTag.controls = true;
   audioTag.src = audioUrl;
 
+  let modulation = "";
+  if (record.modulation == 0) modulation = "АМ";
+  if (record.modulation == 1) modulation = "ЧМ";
+
   text.textContent =
-    getTime(date) + " (" + String((record.frequency + 2400) / 80) + "МГц):";
+    getTime(date) +
+    " (" +
+    String((record.frequency + 2400) / 80) +
+    "МГц) [" +
+    modulation +
+    "]:";
 
   block.className = "audio_block";
   block.appendChild(text);
@@ -183,6 +197,7 @@ socket.on("recording", async (record) => {
           audioChunks: 0,
           frequency: userFrequencysOut[channel],
           beep: false,
+          modulation: userModulation[channel],
         });
         clearInterval(interval);
       } else
@@ -190,6 +205,7 @@ socket.on("recording", async (record) => {
           audioChunks: 0,
           frequency: userFrequencysOut[channel],
           beep: true,
+          modulation: userModulation[channel],
         });
     }, beepLength);
   }

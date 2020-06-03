@@ -35,6 +35,7 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("recording", {
           audioChunks: audio.audioChunks,
           frequency: audio.frequency,
+          modulation: audio.modulation,
         });
     });
 });

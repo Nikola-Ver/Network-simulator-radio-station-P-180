@@ -135,7 +135,8 @@ body {
   box-shadow: inset 0px 0 10px 0 black;
 }
 
-.radiostation_button {
+.radiostation_button,
+.radiostation_button_light {
   width: calc(var(--coeff-size-station) / 5 * 5px);
   height: calc(var(--coeff-size-station) / 5 * 3px);
   margin-top: calc(var(--coeff-size-station) / 5 * 0.5px);
@@ -152,7 +153,13 @@ body {
   transition: 0.1s;
 }
 
-.radiostation_button:active {
+.radiostation_button_light {
+  background-color: rgba(203, 171, 0, 0.5);
+  box-shadow: 0 0 4px rgb(250, 255, 0);
+}
+
+.radiostation_button:active,
+.radiostation_button_light:active {
   box-shadow: inset 0px 0 7px 0 black;
 }
 
@@ -594,6 +601,7 @@ body::-webkit-scrollbar-thumb {
   }
 
   .radiostation_button,
+  .radiostation_button_light,
   .radiostation_power_button,
   .radiostation_antenna_active,
   .broadcast_button,
@@ -611,6 +619,10 @@ body::-webkit-scrollbar-thumb {
   .arrow_left,
   .arrow_right {
     cursor: auto;
+  }
+
+  .radiostation_button_light {
+    box-shadow: 0 0 3px rgb(250, 255, 0);
   }
 
   .controls_open,

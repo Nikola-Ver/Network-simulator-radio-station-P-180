@@ -98,13 +98,18 @@ function processKey(keyCode) {
         menuImplementation.closeCurrentMenu();
         menuImplementation.showMenu(currentPosition.currentMenu);
         menuRadiostation.currentMenu = currentPosition.currentMenu;
-        menuRadiostation.position = 0;
+
+        if (menuRadiostation.currentMenu === 1 && menuRadiostation.blocking)
+          menuRadiostation.position = 1;
+        else menuRadiostation.position = 0;
       }
     }
   }
 }
 
 const menuRadiostation = {
+  displayTimer: null,
+  lightKeyboard: false,
   blocking: true,
   statusWorking: false,
   statusHeadset: false,
@@ -136,12 +141,67 @@ const menuRadiostation = {
   stopWorking() {
     menuImplementation.stopTime();
     menuImplementation.shutDown();
+    this.block();
     this.statusWorking = false;
   },
 
-  block() {},
+  setTimerDisplay(time) {
+    this.displayTimer = time;
+    return setTimeout(() => {
+      menuImplementation.shutDown();
+    }, time);
+  },
 
-  unblock() {},
+  clearTimerDisplay(timer) {
+    this.displayTimer = null;
+    clearTimeout(timer);
+    return null;
+  },
+
+  block() {
+    let divCollection = document.getElementById("main_menu").children;
+    divCollection[1].id = "block";
+    divCollection[0].id = "";
+    divCollection[2].id = "current_position";
+    document
+      .getElementsByClassName("key")[0]
+      .style.setProperty("--key_img", 'url("../img/key.png") no-repeat');
+
+    this.blocking = true;
+  },
+
+  unblock() {
+    let divCollection = document.getElementById("main_menu").children;
+    divCollection[0].id = "";
+    divCollection[1].id = "current_position";
+    divCollection[2].id = "";
+    document
+      .getElementsByClassName("key")[0]
+      .style.setProperty("--key_img", "transparent");
+    this.blocking = false;
+  },
+
+  lightKeyboardOn() {
+    let divCollection = document.getElementsByClassName("radiostation_button");
+    let lengthDiv = divCollection.length;
+    for (let i = 0; i < lengthDiv; i++) {
+      divCollection[0].className = "radiostation_button_light";
+    }
+
+    this.lightKeyboard = true;
+  },
+
+  lightKeyboardOff() {
+    let divCollection = document.getElementsByClassName(
+      "radiostation_button_light"
+    );
+    let lengthDiv = divCollection.length;
+    for (let i = 0; i < lengthDiv; i++) {
+      divCollection[0].className = "radiostation_button";
+    }
+
+    this.lightKeyboard = false;
+  },
 
   headsetOn() {
     document
@@ -247,12 +307,22 @@ const menuImplementation = {
       case 3:
       case 4:
       case 5:
+      case 10:
+      case 11:
         this.changeTextButton("Выбор", "", "Выход");
         break;
 
       case 7:
       case 8:
         this.changeTextButton("", "", "Выход");
+        break;
+
+      case 9:
+        this.changeTextButton("Да", "", "Нет");
+        break;
+
+      case 12:
+        this.changeTextButton("Ввод", "<-", "Отмена");
         break;
     }
   },

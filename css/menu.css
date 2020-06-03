@@ -201,7 +201,8 @@
   user-select: none;
 }
 
-.text_info {
+.text_info,
+.little_letter_text_info {
   font-size: 9px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -210,6 +211,10 @@
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;
+}
+
+.little_letter_text_info {
+  font-size: 7px;
 }
 
 #block {
@@ -259,6 +264,10 @@
   .top_text_menu,
   .text_info {
     font-size: 6px;
+  }
+
+  .little_letter_text_info {
+    font-size: 4px;
   }
 
   .time {

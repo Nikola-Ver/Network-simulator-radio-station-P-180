@@ -6,6 +6,7 @@ rightButtonChannel.addEventListener("click", () => {
   if (channel < 9)
     menuRadiostation.divChannel.textContent = "0" + String(channel + 1);
   else menuRadiostation.divChannel.textContent = channel + 1;
+  menuRadiostation.setFrequency();
 });
 
 leftButtonChannel.addEventListener("click", () => {
@@ -13,6 +14,7 @@ leftButtonChannel.addEventListener("click", () => {
   if (channel < 9)
     menuRadiostation.divChannel.textContent = "0" + String(channel + 1);
   else menuRadiostation.divChannel.textContent = channel + 1;
+  menuRadiostation.setFrequency();
 });
 
 const buttonOK = document.getElementById("button_ok");
@@ -51,6 +53,13 @@ button2.addEventListener("click", () => {
 });
 button3.addEventListener("click", () => {
   processKey("Digit3");
+});
+button3.addEventListener("mousedown", () => {
+  if (menuRadiostation.currentMenu === 0) menuRadiostation.isBroadcastingBeep();
+});
+button3.addEventListener("mouseup", () => {
+  if (menuRadiostation.statusBroadcating)
+    menuRadiostation.isNotBroadcastingBeep();
 });
 button4.addEventListener("click", () => {
   processKey("Digit4");
@@ -110,6 +119,7 @@ function processKey(keyCode) {
 const menuRadiostation = {
   passwordSetting: "0000",
   displayTimer: null,
+  frequencyCallFlag: true,
   lightKeyboard: false,
   blocking: true,
   statusWorking: false,
@@ -119,6 +129,7 @@ const menuRadiostation = {
   statusBroadcating: false,
   statusBeep: false,
   statusTime: false,
+  prevPower: 2,
   position: 0,
   speakVolume: 24,
   volume: 24,
@@ -143,6 +154,33 @@ const menuRadiostation = {
     menuImplementation.shutDown();
     this.block();
     this.statusWorking = false;
+  },
+
+  isBroadcastingBeep() {},
+  isNotBroadcastingBeep() {},
+
+  setVolumeImg(degree) {
+    if (degree === 0)
+      document
+        .getElementsByClassName("sound_type")[0]
+        .style.setProperty(
+          "--sound_type_img",
+          'url("../img/mute.png") no-repeat'
+        );
+    else if (this.statusHeadset)
+      document
+        .getElementsByClassName("sound_type")[0]
+        .style.setProperty(
+          "--sound_type_img",
+          'url("../img/headset.png") no-repeat'
+        );
+    else
+      document
+        .getElementsByClassName("sound_type")[0]
+        .style.setProperty(
+          "--sound_type_img",
+          'url("../img/speaker.png") no-repeat'
+        );
   },
 
   setTimerDisplay(time) {
@@ -188,6 +226,7 @@ const menuRadiostation = {
     divCollection[4].id = "";
     divCollection = document.getElementById("frequency_call");
     divCollection.className = "block_channel";
+    this.setFrequency();
 
     this.blocking = false;
   },
@@ -288,6 +327,33 @@ const menuRadiostation = {
   beepOff() {
     this.statusBeep = false;
   },
+
+  setPower(degree) {
+    let [divPowerImg] = document.getElementsByClassName("power");
+    if (degree === 3) degree = this.prevPower;
+    if (degree > 1) {
+      divPowerImg.style.setProperty(
+        "--power_img",
+        'url("../img/max_power.png") no-repeat'
+      );
+      this.prevPower = 1;
+    } else {
+      divPowerImg.style.setProperty(
+        "--power_img",
+        'url("../img/nominal_power.png") no-repeat'
+      );
+      this.prevPower = 2;
+    }
+  },
+
+  setFrequency() {
+    let divFrequency = document.getElementById("bottom_text_frequency");
+    if (this.frequencyCallFlag) {
+      divFrequency.textContent = getTextFrequency(userFrequencysOut[channel]);
+    } else {
+      divFrequency.textContent = getTextFrequency(userFrequencysIn[channel]);
+    }
+  },
 };
 
 const menuImplementation = {
@@ -337,6 +403,7 @@ const menuImplementation = {
       case 13:
       case 14:
       case 15:
+      case 21:
         this.changeTextButton("Да", "", "Нет");
         break;
 

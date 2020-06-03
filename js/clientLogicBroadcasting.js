@@ -9,6 +9,7 @@ const beep = new Audio("../music/beep.mp3");
 const userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const userModulation = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const userChannelWidth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let channel = 0;
 
 function recordAudio(data) {
@@ -158,6 +159,9 @@ socket.on("recording", async (record) => {
   function isNotBroadcasting() {
     menuRadiostation.broadcastingOff();
   }
+
+  menuRadiostation.isBroadcastingBeep = isBroadcastingBeep;
+  menuRadiostation.isNotBroadcastingBeep = isNotBroadcastingBeep;
 
   function isBroadcastingBeep() {
     if (

@@ -61,6 +61,13 @@ button3.addEventListener("mouseup", () => {
   if (menuRadiostation.statusBroadcating)
     menuRadiostation.isNotBroadcastingBeep();
 });
+button3.addEventListener("touchstart", () => {
+  if (menuRadiostation.currentMenu === 0) menuRadiostation.isBroadcastingBeep();
+});
+button3.addEventListener("touchend", () => {
+  if (menuRadiostation.statusBroadcating)
+    menuRadiostation.isNotBroadcastingBeep();
+});
 button4.addEventListener("click", () => {
   processKey("Digit4");
 });

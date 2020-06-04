@@ -249,6 +249,7 @@ const menuRadiostation = {
   },
 
   lightKeyboardOff() {
+    flagLightKeyboard = false;
     let divCollection = document.getElementsByClassName(
       "radiostation_button_light"
     );
@@ -459,6 +460,7 @@ const menuImplementation = {
   },
 
   shutDown() {
+    menuRadiostation.lightKeyboardOff();
     menuRadiostation.listOfMenuElements.forEach((e) => {
       e.className = "not_active";
     });

@@ -813,12 +813,12 @@ function menu(currentMenu, position, keyCode) {
             break;
 
           case "Enter":
-            textFrequencyTemp = divCollection.textContent;
             if (
               getNumFrequency(divCollection.textContent) >= 0 &&
               getNumFrequency(divCollection.textContent) <= 11520 &&
               Number.isInteger(Number(textFrequencyTemp) / 12.5)
             ) {
+              textFrequencyTemp = divCollection.textContent;
               userFrequencysIn[currentChannel] = getNumFrequency(
                 divCollection.textContent
               );

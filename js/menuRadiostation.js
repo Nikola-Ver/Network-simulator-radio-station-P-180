@@ -193,7 +193,7 @@ const menuRadiostation = {
   setTimerDisplay(time) {
     this.displayTimer = time;
     return setTimeout(() => {
-      menuImplementation.shutDown();
+      menuImplementation.shutDownDisplay();
     }, time * 1000);
   },
 
@@ -400,6 +400,7 @@ const menuImplementation = {
       case 6:
       case 7:
       case 8:
+      case 22:
         this.changeTextButton("", "", "Выход");
         break;
 
@@ -461,6 +462,12 @@ const menuImplementation = {
 
   shutDown() {
     menuRadiostation.lightKeyboardOff();
+    menuRadiostation.listOfMenuElements.forEach((e) => {
+      e.className = "not_active";
+    });
+  },
+
+  shutDownDisplay() {
     menuRadiostation.listOfMenuElements.forEach((e) => {
       e.className = "not_active";
     });

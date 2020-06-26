@@ -120,13 +120,13 @@ function menu(currentMenu, position, keyCode) {
           };
 
         case "Digit0":
-          divCollection = document.getElementById("test_menu_text");
+          divCollection = document.getElementById("_test_menu_text");
           if (menuRadiostation.blocking)
             divCollection.textContent = "Радиостанция заблокирована";
           else
             divCollection.textContent = "Радиостанция готова к использованию";
           return {
-            currentMenu: 6,
+            currentMenu: 22,
             position: 0,
           };
       }
@@ -1064,6 +1064,14 @@ function menu(currentMenu, position, keyCode) {
             position,
           };
       }
+      break;
+
+    case 22:
+      if (keyCode === "Escape")
+        return {
+          currentMenu: 0,
+          position,
+        };
       break;
   }
   return null;

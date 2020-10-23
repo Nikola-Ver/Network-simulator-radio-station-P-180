@@ -1,6 +1,6 @@
 # Network-simulator-radio-station-P-180
 
-## The software implements the following functions:
+## The software implements the following functions
 
 - setting of frequencies of reception and transmission;
 - radio station menu;

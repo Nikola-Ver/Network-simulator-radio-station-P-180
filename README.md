@@ -31,61 +31,89 @@ The software tool transmits in full the process of operation of the radio statio
 
 The start menu looks like this:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/start-menu.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/start-menu.png" />
+</p>
 
 In order to start working with the radio station, you need to do the following:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/start.gif" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/start.gif" />
+</p>
 
 The picture shows how the battery, antenna and headset are connected, after which the radio turns on.
 By pressing the button, the headset either connects or disconnects:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/headset-connection.gif" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/headset-connection.gif" />
+</p>
 
 ### Menu
 
 In the menu, you can go to: channel setup, parameters, radio station information, access setup and test. To go to the lower point, press the number "8", to move to the upper number "2", to go through the item, press the "Enter" key.
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/menu.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/menu.png" />
+</p>
 
 In the parameters you can adjust: microphone volume, auto-lock, keyboard backlight, and screen off.
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/parameters.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/parameters.png" />
+</p>
 
 Adjusting the microphone volume:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/volume.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/volume.png" />
+</p>
 
 Auto-lock setting:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/auto-lock.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/auto-lock.png" />
+</p>
 
 Setting the keyboard backlight:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/backlight.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/backlight.png" />
+</p>
 
 Setting the screen off timer:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/screen-off-timer.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/screen-off-timer.png" />
+</p>
 
 In the information about the radio station, you can see the temperature and version of the radio station:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/temperature.png" />
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/version.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/temperature.png" />
+</p>
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/version.png" />
+</p>
 
 ### Frequency setting
 
 To start tuning a radio station, you need to go to "Access" and select "Settings", after which we will have access to tuning the radio station. Then you will need to select modulation, receive and transmit frequency (in the range of 30-174 MHz), select the channel width and power. Then click on "TNG" or "PRD" for voice transmission. "CALL" or number "3" in the main menu for the transmission of telegraph sound. To open the transmission controllers, click on the button in the upper left corner.
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/schema.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/schema.png" />
+</p>
 
 The GIF shows the full setup:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/frequency-setting.gif" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/frequency-setting.gif" />
+</p>
 
 Reception and transmission can be carried out on different channels, to switch the channel you must press one of the following buttons:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/channel-switching.gif" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/channel-switching.gif" />
+</p>
 
 To find out even more, see the full documentation.
 
@@ -93,10 +121,14 @@ To find out even more, see the full documentation.
 
 Change background:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/change-background.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/change-background.png" />
+</p>
 
 To change the background, click three times on the canvas.
 
 Also, when the conversation recording mode is turned on, they can be re-listen or download:
 
-<img align="center" src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/records.png" />
+<p align="center">
+  <img src="https://nikola-ver.github.io/Network-simulator-radio-station-P-180/img/readme/records.png" />
+</p>

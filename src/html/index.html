@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../img/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/menu.css" />
+    <title>Радиостанция Р-180</title>
+  </head>
+  <body class="body_hidden_thumb">
+    <div class="loading"></div>
+
+    <div class="open_controls_button" title="Контроллеры управления">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="controls_close">
+      <div class="broadcast_button_block">
+        <div class="broadcast_button_top_bolt"></div>
+        <p class="broadcast_button_text">ТНГ</p>
+        <div class="broadcast_button"></div>
+        <div class="broadcast_button_bottom_bolt"></div>
+      </div>
+      <div class="controls_call_broadcast_close">
+        <p class="call_text">
+          ВЫЗ
+        </p>
+        <div class="call"></div>
+        <p class="broadcast_text">
+          ПРД
+        </p>
+        <div class="broadcast"></div>
+      </div>
+    </div>
+
+    <div
+      class="connect_controls_button"
+      title="Подключение и отключение устройств"
+    ></div>
+
+    <div class="connect_controls_block_close">
+      <p>Аккумулятор</p>
+      <div class="battery_button"></div>
+      <p>Антенна</p>
+      <div class="antenna_button"></div>
+      <p>Гарнитура</p>
+      <div class="headset_button"></div>
+    </div>
+
+    <div class="records_button" title="Записи"></div>
+
+    <div class="records_block_not_active">
+      <h1 class="records_head_text">Записи по частотам и времени</h1>
+      <div class="records_block"></div>
+    </div>
+
+    <div class="radiostation">
+      <div class="radiostation_antenna_block">
+        <div class="radiostation_antenna_not_active"></div>
+      </div>
+      <div class="radiostation_body">
+        <div class="arrow_block">
+          <div class="arrow_left"></div>
+          <div class="arrow_right"></div>
+        </div>
+        <div class="radiostation_power_button"></div>
+        <div class="radiostation_display">
+          <!-- Info block -->
+          <div id="top_block" class="not_active">
+            <div class="network"></div>
+            <div class="battery"></div>
+            <div class="power"></div>
+            <div class="sound_type"></div>
+            <div class="key"></div>
+            <div class="operating_mode">АФ</div>
+            <div class="time"></div>
+          </div>
+          <!-- Menu display -->
+          <div id="active_zone" class="not_active">
+            <!-- Start menu-->
+            <div class="not_active">
+              <div class="common_block_channel">
+                <div class="block_channel">
+                  <div id="top_text_channel">Канал</div>
+                  <div id="bottom_text_channel"></div>
+                </div>
+                <div class="not_active" id="frequency_call">
+                  <div id="common_top_text_channel">Адрес вызова (А)</div>
+                  <div id="bottom_text_frequency"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Main menu-->
+            <div class="not_active">
+              <div class="menu_block" id="main_menu">
+                <div class="top_text_menu">Меню</div>
+                <div class="menu_point" id="block">Канал</div>
+                <div class="menu_point" id="current_position">Параметры</div>
+                <div class="menu_point" id="">Инфо</div>
+                <div class="menu_point" id="">Доступ</div>
+                <div class="menu_point" id="">Тест</div>
+              </div>
+            </div>
+            <!-- Setting channel -->
+            <div class="not_active">
+              <div class="menu_block" id="settings_channel">
+                <div class="top_text_menu">Канал</div>
+                <div class="menu_point" id="current_position">Аналог</div>
+                <div class="menu_point" id="">Аналог скан.</div>
+                <div class="menu_point" id="">Цифра ФРЧ</div>
+                <div class="menu_point" id="">Цифра ППРЧ</div>
+              </div>
+            </div>
+            <!-- Parameters menu -->
+            <div class="not_active">
+              <div class="menu_block" id="parameters_menu">
+                <div class="top_text_menu">Параметры</div>
+                <div class="menu_point" id="current_position">Микрофон</div>
+                <div class="menu_point" id="">Автоблок</div>
+                <div class="menu_point" id="">Подсветка клав.</div>
+                <div class="menu_point" id="">Выключение экрана</div>
+              </div>
+            </div>
+            <!-- Info menu -->
+            <div class="not_active">
+              <div class="menu_block" id="info_menu">
+                <div class="top_text_menu">Инфо</div>
+                <div class="menu_point" id="current_position">Температура</div>
+                <div class="menu_point" id="">Версия</div>
+              </div>
+            </div>
+            <!-- Access menu -->
+            <div class="not_active">
+              <div class="menu_block" id="access_menu">
+                <div class="top_text_menu">Доступ</div>
+                <div class="menu_point" id="current_position">Пользователь</div>
+                <div class="menu_point" id="">Обзор</div>
+                <div class="menu_point" id="">Настройка</div>
+                <div class="menu_point" id="block">Смена пароля</div>
+              </div>
+            </div>
+            <div class="not_active">
+              <div class="menu_block" id="test_menu">
+                <div class="top_text_menu">Тест</div>
+                <div class="text_info"><br /></div>
+                <div class="text_info" id="test_menu_text"></div>
+              </div>
+            </div>
+            <!-- Temperature menu -->
+            <div class="not_active">
+              <div class="menu_block" id="temperature_menu">
+                <div class="top_text_menu">Температура</div>
+                <div class="text_info">Текущая<br /><br />35 C</div>
+              </div>
+            </div>
+            <!-- Version menu -->
+            <div class="not_active">
+              <div class="menu_block" id="version_menu">
+                <div class="top_text_menu">Версия</div>
+                <div class="text_info">
+                  ARM: V4.9<br />DSP: V2.55<br />PIC: V3.5
+                </div>
+              </div>
+            </div>
+            <!-- Microphone menu -->
+            <div class="not_active">
+              <div class="menu_block" id="microphone_menu">
+                <div class="top_text_menu">Микрофон</div>
+                <div class="text_info">Уровень</div>
+                <div class="text_info" id="graph_speak_volume">
+                  [ | | | | | | | | ]
+                </div>
+                <div class="text_info"><br /></div>
+                <div class="text_info" id="digit_speak_volume">24</div>
+              </div>
+            </div>
+            <!-- Auto blocking -->
+            <div class="not_active">
+              <div class="menu_block" id="autoblocking_menu">
+                <div class="top_text_menu">Автоблокировка</div>
+                <div class="text_info">Вкл/Выкл</div>
+                <div class="menu_point" id="text_blocking">Выкл</div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Keyboard light -->
+            <div class="not_active">
+              <div class="menu_block" id="keyboard_light_menu">
+                <div class="top_text_menu">Подсветка клав.</div>
+                <div class="text_info">Вкл/Выкл</div>
+                <div class="menu_point" id="text_light_keyboard">Выкл</div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Turn off display after time -->
+            <div class="not_active">
+              <div class="menu_block" id="timer_display">
+                <div class="top_text_menu">Выключение экрана</div>
+                <div class="little_letter_text_info"><br />Таймер</div>
+                <div class="menu_point" id="text_timer">0</div>
+              </div>
+            </div>
+            <!-- View mode -->
+            <div class="not_active">
+              <div class="menu_block">
+                <div class="top_text_menu">Обзор</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите пароль</div>
+                <div class="menu_point" id="password_view"></div>
+              </div>
+            </div>
+            <!-- Seting mode -->
+            <div class="not_active">
+              <div class="menu_block">
+                <div class="top_text_menu">Настройка</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите пароль</div>
+                <div class="menu_point" id="password_setting"></div>
+              </div>
+            </div>
+            <!-- Change password -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Смена пароля</div>
+                <div class="menu_point_bold">Пароль</div>
+                <div class="menu_point">####</div>
+                <div class="menu_point_little">Введите новый пароль</div>
+                <div class="menu_point" id="password_change"></div>
+              </div>
+            </div>
+            <!-- Choose modulation -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Модуляция</div>
+                <div class="menu_point" id="analogue_modulation"></div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Choose frequency in -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Частота прм</div>
+                <div
+                  class="text_info"
+                  id="old_input_in_frequency_analogue"
+                ></div>
+                <div class="little_letter_text_info">
+                  Выбор [0-9]
+                </div>
+                <div class="menu_point" id="input_in_frequency_analogue">
+                  000000.0
+                </div>
+              </div>
+            </div>
+            <!-- Choose frequency out -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Частота прд</div>
+                <div
+                  class="text_info"
+                  id="old_input_out_frequency_analogue"
+                ></div>
+                <div class="little_letter_text_info">
+                  Выбор [0-9]
+                </div>
+                <div class="menu_point" id="input_out_frequency_analogue">
+                  000000.0
+                </div>
+              </div>
+            </div>
+            <!-- Channel width -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Шир. канала</div>
+                <div class="menu_point" id="chanel_width_analogue">12,5</div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Power -->
+            <div class="not_active">
+              <div class="menu_block" id="">
+                <div class="top_text_menu">Канал</div>
+                <div class="text_info">Мощность</div>
+                <div class="menu_point" id="power_analogue">Номинальная</div>
+                <div class="little_letter_text_info">
+                  <br />
+                  Выбор [* и #]
+                </div>
+              </div>
+            </div>
+            <!-- Volume menu -->
+            <div class="not_active">
+              <div class="menu_block" id="volume_menu">
+                <div class="top_text_menu">Громкость</div>
+                <div class="text_info">Уровень</div>
+                <div class="text_info" id="graph_volume">
+                  [ | | | | | | | | ]
+                </div>
+                <div class="text_info"><br /></div>
+                <div class="text_info" id="digit_volume">24</div>
+              </div>
+            </div>
+            <!-- Test -->
+            <div class="not_active">
+              <div class="menu_block" id="test_menu">
+                <div class="top_text_menu">Тест</div>
+                <div class="text_info"><br /></div>
+                <div class="text_info" id="_test_menu_text"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Bottom button block -->
+          <div id="bottom_block" class="not_active">
+            <div id="left_bottom_button"></div>
+            <div id="center_bottom_button"></div>
+            <div id="right_bottom_button"></div>
+          </div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_ok">✓</div>
+          <div class="radiostation_button" id="button_menu">M</div>
+          <div class="radiostation_button" id="button_cancel">×</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_1">1</div>
+          <div class="radiostation_button" id="button_2">2</div>
+          <div class="radiostation_button" id="button_3">3</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_4">4</div>
+          <div class="radiostation_button" id="button_5">5</div>
+          <div class="radiostation_button" id="button_6">6</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_7">7</div>
+          <div class="radiostation_button" id="button_8">8</div>
+          <div class="radiostation_button" id="button_9">9</div>
+        </div>
+        <div class="radiostation_button_block">
+          <div class="radiostation_button" id="button_lattice">#</div>
+          <div class="radiostation_button" id="button_0">0</div>
+          <div class="radiostation_button" id="button_star">*</div>
+        </div>
+      </div>
+      <div class="radiostation_accum_not_active"></div>
+    </div>
+
+    <script type="text/javascript" src="../js/modules/socket.io.js"></script>
+    <script src="../js/clientLogicBroadcasting.js"></script>
+    <script src="../js/clientControls.js"></script>
+    <script src="../js/menuRadiostation.js"></script>
+    <script src="../js/menuLogic.js"></script>
+    <script src="../js/menuLogic.js"></script>
+  </body>
+</html>

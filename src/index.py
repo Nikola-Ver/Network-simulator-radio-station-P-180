@@ -51,7 +51,7 @@ def start_server(path_to_launcher, is_recording):
               (' recording' if is_recording else ''))
 
 
-Label(window, text='Меню заупска программы', fg='white', bg=BACKGROUND_COLOR, font='Arial 16 bold')\
+Label(window, text='Меню запуска программы', fg='white', bg=BACKGROUND_COLOR, font='Arial 16 bold')\
     .pack(side=TOP, pady=5)
 if len(server_path_arr) != 0:
     server_path = re.sub(r'\\startServer.bat.*', '', str(server_path_arr[0]))

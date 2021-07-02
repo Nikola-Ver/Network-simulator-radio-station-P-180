@@ -1,1 +1,1 @@
-# This is the interface for starting the network radio station p 180
+# This is the interface for starting the network radio station P-180

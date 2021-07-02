@@ -435,12 +435,13 @@ const menuImplementation = {
     }
   },
 
-  async startTime() {
+  startTime() {
     menuRadiostation.statusTime = true;
-    menuRadiostation.divTime.textContent = getTime(new Date());
+    menuRadiostation.startTimeVal = new Date();
+    menuRadiostation.divTime.textContent = getTime(new Date(0));
 
-    this.timeInterval = setInterval(async () => {
-      menuRadiostation.divTime.textContent = getTime(new Date());
+    this.timeInterval = setInterval(() => {
+      menuRadiostation.divTime.textContent = getTime(new Date().valueOf() - menuRadiostation.startTimeVal.valueOf());
     }, 1000);
   },
 

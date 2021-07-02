@@ -1,10 +1,10 @@
 const socket = io();
 const recordLength = 500;
 const beepLength = 100;
-const [broadcastButton] = document.getElementsByClassName("broadcast_button");
-const [_broadcastButton] = document.getElementsByClassName("broadcast");
-const [callButton] = document.getElementsByClassName("call");
-const beep = new Audio("../music/beep.mp3");
+const [broadcastButton] = document.getElementsByClassName('broadcast_button');
+const [_broadcastButton] = document.getElementsByClassName('broadcast');
+const [callButton] = document.getElementsByClassName('call');
+const beep = new Audio('../music/beep.mp3');
 
 const userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -22,7 +22,7 @@ function recordAudio(data) {
 
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.addEventListener("dataavailable", (event) => {
+      mediaRecorder.addEventListener('dataavailable', (event) => {
         socket.emit(data, {
           audioChunks: event.data,
           frequency: userFrequencysOut[channel],
@@ -51,7 +51,7 @@ function stopBeep() {
   menuRadiostation.beepOff();
 }
 
-socket.on("stream", async (stream) => {
+socket.on('stream', async (stream) => {
   if (
     !menuRadiostation.statusBroadcating &&
     menuRadiostation.statusWorking &&
@@ -86,63 +86,63 @@ socket.on("stream", async (stream) => {
   }
 });
 
-function getTime(date) {
-  let hours = String(date.getHours());
-  let minutes = String(date.getMinutes());
-  if (hours.length < 2) hours = "0" + hours;
-  if (minutes.length < 2) minutes = "0" + minutes;
-  return hours + ":" + minutes;
+function getTime(time) {
+  let hours = String(Math.floor(time / (60 * 60 * 1000)));
+  let minutes = String(Math.floor(time  / (60 * 1000)));
+  if (hours.length < 2) hours = '0' + hours;
+  if (minutes.length < 2) minutes = '0' + minutes;
+  return hours + ':' + minutes;
 }
 
-socket.on("recording", async (record) => {
-  const [divParent] = document.getElementsByClassName("records_block");
-  const block = document.createElement("div");
-  const audioTag = document.createElement("audio");
-  const text = document.createElement("p");
+socket.on('recording', async (record) => {
+  const [divParent] = document.getElementsByClassName('records_block');
+  const block = document.createElement('div');
+  const audioTag = document.createElement('audio');
+  const text = document.createElement('p');
   const date = new Date();
 
   const audioBlob = new Blob(Array(record.audioChunks), {
-    type: "audio/mp3",
+    type: 'audio/mp3',
   });
   const audioUrl = URL.createObjectURL(audioBlob);
   audioTag.controls = true;
   audioTag.src = audioUrl;
 
-  let modulation = "";
-  if (record.modulation == 0) modulation = "АМ";
-  if (record.modulation == 1) modulation = "ЧМ";
+  let modulation = '';
+  if (record.modulation == 0) modulation = 'АМ';
+  if (record.modulation == 1) modulation = 'ЧМ';
 
   text.textContent =
     getTime(date) +
-    " (" +
+    ' (' +
     String((record.frequency + 2400) / 80) +
-    "МГц) [" +
+    'МГц) [' +
     modulation +
-    "]:";
+    ']:';
 
-  block.className = "audio_block";
+  block.className = 'audio_block';
   block.appendChild(text);
   block.appendChild(audioTag);
   divParent.appendChild(block);
 });
 
 (async () => {
-  broadcastButton.addEventListener("touchstart", isBroadcasting);
-  broadcastButton.addEventListener("touchend", isNotBroadcasting);
-  _broadcastButton.addEventListener("touchstart", isBroadcasting);
-  _broadcastButton.addEventListener("touchend", isNotBroadcasting);
-  callButton.addEventListener("touchstart", isBroadcastingBeep);
-  callButton.addEventListener("touchend", isNotBroadcastingBeep);
+  broadcastButton.addEventListener('touchstart', isBroadcasting);
+  broadcastButton.addEventListener('touchend', isNotBroadcasting);
+  _broadcastButton.addEventListener('touchstart', isBroadcasting);
+  _broadcastButton.addEventListener('touchend', isNotBroadcasting);
+  callButton.addEventListener('touchstart', isBroadcastingBeep);
+  callButton.addEventListener('touchend', isNotBroadcastingBeep);
 
-  broadcastButton.addEventListener("mousedown", isBroadcasting);
-  broadcastButton.addEventListener("mouseup", isNotBroadcasting);
-  _broadcastButton.addEventListener("mousedown", isBroadcasting);
-  _broadcastButton.addEventListener("mouseup", isNotBroadcasting);
-  callButton.addEventListener("mousedown", isBroadcastingBeep);
-  callButton.addEventListener("mouseup", isNotBroadcastingBeep);
+  broadcastButton.addEventListener('mousedown', isBroadcasting);
+  broadcastButton.addEventListener('mouseup', isNotBroadcasting);
+  _broadcastButton.addEventListener('mousedown', isBroadcasting);
+  _broadcastButton.addEventListener('mouseup', isNotBroadcasting);
+  callButton.addEventListener('mousedown', isBroadcastingBeep);
+  callButton.addEventListener('mouseup', isNotBroadcastingBeep);
 
-  const recorder = await recordAudio("stream");
-  const record = await recordAudio("record");
+  const recorder = await recordAudio('stream');
+  const record = await recordAudio('record');
 
   function isBroadcasting() {
     if (
@@ -197,7 +197,7 @@ socket.on("recording", async (record) => {
   function broadcastingBeep() {
     const interval = setInterval(async () => {
       if (!menuRadiostation.statusBroadcating) {
-        socket.emit("stream", {
+        socket.emit('stream', {
           audioChunks: 0,
           frequency: userFrequencysOut[channel],
           beep: false,
@@ -205,7 +205,7 @@ socket.on("recording", async (record) => {
         });
         clearInterval(interval);
       } else
-        socket.emit("stream", {
+        socket.emit('stream', {
           audioChunks: 0,
           frequency: userFrequencysOut[channel],
           beep: true,

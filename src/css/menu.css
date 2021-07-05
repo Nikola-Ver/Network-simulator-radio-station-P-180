@@ -6,6 +6,7 @@
   --power_img: url("../img/nominal_power.png") no-repeat;
   --sound_type_img: url("../img/speaker.png") no-repeat;
   --key_img: url("../img/key.png") no-repeat;
+  --digit_frch_img: url("../img/repeat.png") no-repeat;
 }
 
 .not_active {
@@ -61,7 +62,6 @@
   font-size: 8px;
   margin: auto;
   margin-right: 2px;
-  margin-left: 0;
 }
 
 .battery {
@@ -97,6 +97,15 @@
   background-size: 100%;
 }
 
+#digit_frch {
+  margin-top: 2px;
+  margin-left: 1px;
+  width: 7%;
+  height: -webkit-fill-available;
+  background: var(--digit_frch_img);
+  background-size: 100%;
+}
+
 .operating_mode {
   color: white;
   font-family: DejaVu Sans Mono, monospace;
@@ -106,6 +115,7 @@
   font-size: 6px;
   margin: auto;
   margin-right: 2px;
+  margin-left: 2px;
 }
 
 .common_block_channel {

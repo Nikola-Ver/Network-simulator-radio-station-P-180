@@ -240,31 +240,41 @@ function menu(currentMenu, position, keyCode) {
           divCollection[position + 1].id = 'current_position';
           switch (position) {
             case 0:
+              document.getElementById('digit_frch').style.opacity = '0';
               currentChannel = channel;
               divCollection = document.getElementById('analogue_modulation');
               divCollection.textContent =
                 userModulation[currentChannel] === 0 ? 'АМ' : 'ЧМ';
+              [divCollection] =
+                document.getElementsByClassName('operating_mode');
+              divCollection.textContent = 'АФ';
               return {
                 currentMenu: 16,
                 position,
               };
             case 1:
-              currentChannel = channel;
-              divCollection = document.getElementById(
-                'analogue_modulation_scan'
-              );
-              divCollection.textContent =
-                userModulation[currentChannel] === 0 ? 'АМ' : 'ЧМ';
+              document.getElementById('digit_frch').style.opacity = '0';
+              [divCollection] =
+                document.getElementsByClassName('operating_mode');
+              divCollection.textContent = 'АСФ';
               return {
                 currentMenu: 23,
                 position,
               };
             case 2:
+              document.getElementById('digit_frch').style.opacity = '0';
+              [divCollection] =
+                document.getElementsByClassName('operating_mode');
+              divCollection.textContent = 'ЦФ';
               return {
                 currentMenu: 2,
                 position,
               };
             case 3:
+              [divCollection] =
+                document.getElementsByClassName('operating_mode');
+              divCollection.textContent = 'ЦФ';
+              document.getElementById('digit_frch').style.opacity = '';
               return {
                 currentMenu: 2,
                 position,
@@ -773,7 +783,7 @@ function menu(currentMenu, position, keyCode) {
 
         case 'NumpadMultiply':
           if (userModulation[currentChannel] > 0)
-            userModulation[currentChannel]--;
+            userModulation[currentChannel] = 0;
           divCollection = document.getElementById('analogue_modulation');
           divCollection.textContent =
             userModulation[currentChannel] === 0 ? 'АМ' : 'ЧМ';
@@ -784,7 +794,7 @@ function menu(currentMenu, position, keyCode) {
 
         case 'NumpadDivide':
           if (userModulation[currentChannel] < 1)
-            userModulation[currentChannel]++;
+            userModulation[currentChannel] = 1;
           divCollection = document.getElementById('analogue_modulation');
           divCollection.textContent =
             userModulation[currentChannel] === 0 ? 'АМ' : 'ЧМ';
@@ -929,7 +939,7 @@ function menu(currentMenu, position, keyCode) {
 
         case 'NumpadMultiply':
           if (userChannelWidth[currentChannel] > 0)
-            userChannelWidth[currentChannel]--;
+            userChannelWidth[currentChannel] = 0;
           divCollection = document.getElementById('chanel_width_analogue');
           divCollection.textContent = '12,5';
           return {
@@ -938,8 +948,8 @@ function menu(currentMenu, position, keyCode) {
           };
 
         case 'NumpadDivide':
-          if (userModulation[currentChannel] < 1)
-            userModulation[currentChannel]++;
+          if (userChannelWidth[currentChannel] < 1)
+            userChannelWidth[currentChannel] = 1;
           divCollection = document.getElementById('chanel_width_analogue');
           divCollection.textContent = '25';
           return {
@@ -1232,7 +1242,7 @@ function menu(currentMenu, position, keyCode) {
           divCollection = document.getElementById('analogue_scan_power');
           divCollection.textContent = 'Номинальная';
           return {
-            currentMenu: 26,
+            currentMenu: 27,
             position,
           };
 
@@ -1240,7 +1250,7 @@ function menu(currentMenu, position, keyCode) {
           divCollection = document.getElementById('analogue_scan_power');
           divCollection.textContent = 'Повышенная';
           return {
-            currentMenu: 26,
+            currentMenu: 27,
             position,
           };
       }

@@ -6,10 +6,10 @@ const [_broadcastButton] = document.getElementsByClassName('broadcast');
 const [callButton] = document.getElementsByClassName('call');
 const beep = new Audio('../music/beep.mp3');
 
-const userFrequencysOut = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const userFrequencysIn = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const userModulation = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const userChannelWidth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const userFrequencysOut = new Array(16).fill(0);
+const userFrequencysIn = new Array(16).fill(0);
+const userModulation = new Array(16).fill(0);
+const userChannelWidth = new Array(16).fill(0);
 let channel = 0;
 
 function recordAudio(data) {

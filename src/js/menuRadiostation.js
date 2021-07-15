@@ -163,8 +163,8 @@ const menuRadiostation = {
     this.statusWorking = false;
   },
 
-  isBroadcastingBeep() {},
-  isNotBroadcastingBeep() {},
+  isBroadcastingBeep() { },
+  isNotBroadcastingBeep() { },
 
   setVolumeImg(degree) {
     if (degree === 0)
@@ -418,6 +418,7 @@ const menuImplementation = {
 
       case 23:
       case 16:
+      case 28:
         this.changeTextButton('', 'Итог', 'След.');
         break;
 

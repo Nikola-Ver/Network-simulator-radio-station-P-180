@@ -82,16 +82,24 @@ socket.on('stream', async (stream) => {
             await audio.play();
           }
         }
-      } catch {}
+      } catch { }
   }
 });
 
 function getTime(time) {
   let hours = String(Math.floor(time / (60 * 60 * 1000)));
-  let minutes = String(Math.floor(time  / (60 * 1000)));
+  let minutes = String(Math.floor(time / (60 * 1000)));
   if (hours.length < 2) hours = '0' + hours;
   if (minutes.length < 2) minutes = '0' + minutes;
   return hours + ':' + minutes;
+}
+
+function getHoursMinutes(date) {
+  let hours = String(date.getHours());
+  let minutes = String(date.getMinutes());
+  if (hours.length < 2) hours = "0" + hours;
+  if (minutes.length < 2) minutes = "0" + minutes;
+  return hours + ":" + minutes;
 }
 
 socket.on('recording', async (record) => {
@@ -113,7 +121,7 @@ socket.on('recording', async (record) => {
   if (record.modulation == 1) modulation = 'ЧМ';
 
   text.textContent =
-    getTime(date) +
+    getHoursMinutes(date) +
     ' (' +
     String((record.frequency + 2400) / 80) +
     'МГц) [' +
@@ -215,4 +223,4 @@ socket.on('recording', async (record) => {
   }
 })();
 
-console.error = () => {};
+console.error = () => { };

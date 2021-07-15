@@ -267,7 +267,7 @@ function menu(currentMenu, position, keyCode) {
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'ЦФ';
               return {
-                currentMenu: 2,
+                currentMenu: 28,
                 position,
               };
             case 3:
@@ -1251,6 +1251,40 @@ function menu(currentMenu, position, keyCode) {
           divCollection.textContent = 'Повышенная';
           return {
             currentMenu: 27,
+            position,
+          };
+      }
+      break;
+
+    case 28:
+      switch (keyCode) {
+        case 'Escape':
+          return {
+            currentMenu: 29,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+
+        case 'NumpadMultiply':
+          divCollection = document.getElementById('protocol_digit_frch');
+          divCollection.textContent = (divCollection.textContent == 'модем 1х' ||
+            divCollection.textContent == 'модем 2х') ? 'модем 2х' : 'модем 1х';
+          return {
+            currentMenu: 28,
+            position,
+          };
+
+        case 'NumpadDivide':
+          divCollection = document.getElementById('protocol_digit_frch');
+          divCollection.textContent = (divCollection.textContent == 'модем 1х' ||
+            divCollection.textContent == 'голос') ? 'голос' : 'модем 1х';
+          return {
+            currentMenu: 28,
             position,
           };
       }

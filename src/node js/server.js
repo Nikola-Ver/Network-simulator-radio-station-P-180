@@ -18,7 +18,7 @@ if (propertys.length > 2 && propertys[2].toLowerCase() === "recording") {
   console.log("Сервер ведет аудиозапись");
 }
 
-app.use(express.static(__dirname.slice().replace(/\\[^\\]*$/, "")));
+app.use(express.static('../'));
 
 app.use("/", (req, res) => {
   res.redirect("/html/index.html");

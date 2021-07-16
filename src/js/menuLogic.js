@@ -266,6 +266,7 @@ function menu(currentMenu, position, keyCode) {
               [divCollection] =
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'ЦФ';
+              userModulation[currentChannel] = 2;
               return {
                 currentMenu: 28,
                 position,
@@ -275,6 +276,7 @@ function menu(currentMenu, position, keyCode) {
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'ЦФ';
               document.getElementById('digit_frch').style.opacity = '';
+              userModulation[currentChannel] = 3;
               return {
                 currentMenu: 2,
                 position,
@@ -1289,6 +1291,142 @@ function menu(currentMenu, position, keyCode) {
           };
       }
       break;
+
+    case 29:
+      divCollection = document.getElementById('input_in_frequency_frch');
+      if (keyCode.search(/Digit/gi) !== -1 && textFrequencyTemp.length < 7) {
+        digit = keyCode.replace('Digit', '');
+        if (textFrequencyTemp.search(/[1-9]/gi) !== -1 || digit !== '0') {
+          textFrequencyTemp += digit;
+          divCollection.textContent = createFrequencyText(textFrequencyTemp);
+        }
+      } else {
+        switch (keyCode) {
+          case 'Escape':
+            textFrequencyTemp = '';
+            divCollection.textContent = createFrequencyText(textFrequencyTemp);
+            return {
+              currentMenu: 28,
+              position,
+            };
+
+          case 'KeyM':
+            textFrequencyTemp = textFrequencyTemp.slice(0, -1);
+            divCollection.textContent = createFrequencyText(textFrequencyTemp);
+            break;
+
+          case 'Enter':
+            if (
+              getNumFrequency(divCollection.textContent) >= 0 &&
+              getNumFrequency(divCollection.textContent) <= 11520 &&
+              Number.isInteger(Number(divCollection.textContent) / 12.5)
+            ) {
+              userFrequencysOut[currentChannel] = getNumFrequency(
+                divCollection.textContent
+              );
+
+              divCollection = document.getElementById(
+                'old_input_in_frequency_frch'
+              );
+              divCollection.textContent = getTextFrequency(
+                userFrequencysOut[currentChannel]
+              );
+
+              textFrequencyTemp = '';
+
+              divCollection = document.getElementById(
+                'input_in_frequency_frch'
+              );
+              divCollection.textContent =
+                createFrequencyText(textFrequencyTemp);
+
+              return {
+                currentMenu: 30,
+                position,
+              };
+            }
+        }
+      }
+      break;
+
+    case 30:
+      divCollection = document.getElementById('input_out_frequency_frch');
+      if (keyCode.search(/Digit/gi) !== -1 && textFrequencyTemp.length < 7) {
+        digit = keyCode.replace('Digit', '');
+        if (textFrequencyTemp.search(/[1-9]/gi) !== -1 || digit !== '0') {
+          textFrequencyTemp += digit;
+          divCollection.textContent = createFrequencyText(textFrequencyTemp);
+        }
+      } else {
+        switch (keyCode) {
+          case 'Escape':
+            textFrequencyTemp = '';
+            divCollection.textContent = createFrequencyText(textFrequencyTemp);
+            return {
+              currentMenu: 29,
+              position,
+            };
+
+          case 'KeyM':
+            textFrequencyTemp = textFrequencyTemp.slice(0, -1);
+            divCollection.textContent = createFrequencyText(textFrequencyTemp);
+            break;
+
+          case 'Enter':
+            if (
+              getNumFrequency(divCollection.textContent) >= 0 &&
+              getNumFrequency(divCollection.textContent) <= 11520 &&
+              Number.isInteger(Number(divCollection.textContent) / 12.5)
+            ) {
+              userFrequencysOut[currentChannel] = getNumFrequency(
+                divCollection.textContent
+              );
+
+              divCollection = document.getElementById(
+                'old_input_out_frequency_frch'
+              );
+              divCollection.textContent = getTextFrequency(
+                userFrequencysOut[currentChannel]
+              );
+
+              textFrequencyTemp = '';
+
+              divCollection = document.getElementById(
+                'input_out_frequency_frch'
+              );
+              divCollection.textContent =
+                createFrequencyText(textFrequencyTemp);
+
+              return {
+                currentMenu: 31,
+                position,
+              };
+            }
+        }
+      }
+      break;
+
+      case 31:
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 30,
+              position,
+            };
+  
+          case 'Escape':
+            return {
+              currentMenu: 32,
+              position,
+            };
+  
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+        break;
   }
   return null;
 }

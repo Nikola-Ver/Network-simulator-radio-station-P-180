@@ -424,6 +424,8 @@ const menuImplementation = {
 
       case 17:
       case 18:
+      case 29:
+      case 30:
         this.changeTextButton('Ввод', '<-', 'Отмена');
         break;
 
@@ -431,6 +433,7 @@ const menuImplementation = {
       case 24:
       case 25:
       case 26:
+      case 31:
         this.changeTextButton('Пред.', 'Итог', 'След.');
         break;
 

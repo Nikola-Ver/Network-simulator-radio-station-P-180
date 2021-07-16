@@ -88,7 +88,7 @@ socket.on('stream', async (stream) => {
 
 function getTime(time) {
   let hours = String(Math.floor(time / (60 * 60 * 1000)));
-  let minutes = String(Math.floor(time / (60 * 1000)));
+  let minutes = String(Math.floor(time / (60 * 1000)) % 60);
   if (hours.length < 2) hours = '0' + hours;
   if (minutes.length < 2) minutes = '0' + minutes;
   return hours + ':' + minutes;

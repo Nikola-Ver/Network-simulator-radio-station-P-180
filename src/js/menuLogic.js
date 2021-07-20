@@ -237,7 +237,7 @@ function menu(currentMenu, position, keyCode) {
         case 'Enter':
           divCollection[0].id = '';
           removeAllID(divCollection, 1);
-          divCollection[position + 1].id = 'current_position';
+          divCollection[1].id = 'current_position';
           switch (position) {
             case 0:
               document.getElementById('digit_frch').style.opacity = '0';
@@ -1319,17 +1319,25 @@ function menu(currentMenu, position, keyCode) {
             if (
               getNumFrequency(divCollection.textContent) >= 0 &&
               getNumFrequency(divCollection.textContent) <= 11520 &&
-              Number.isInteger(Number(divCollection.textContent) / 12.5)
+              Number.isInteger(Number(textFrequencyTemp) / 12.5)
             ) {
-              userFrequencysOut[currentChannel] = getNumFrequency(
+              textFrequencyTemp = divCollection.textContent;
+              userFrequencysIn[currentChannel] = getNumFrequency(
                 divCollection.textContent
+              );
+
+              divCollection = document.getElementById(
+                'old_input_out_frequency_frch'
+              );
+              divCollection.textContent = getTextFrequency(
+                userFrequencysOut[currentChannel]
               );
 
               divCollection = document.getElementById(
                 'old_input_in_frequency_frch'
               );
               divCollection.textContent = getTextFrequency(
-                userFrequencysOut[currentChannel]
+                userFrequencysIn[currentChannel]
               );
 
               textFrequencyTemp = '';
@@ -1406,27 +1414,214 @@ function menu(currentMenu, position, keyCode) {
       }
       break;
 
-      case 31:
+    case 31:
+      divCollection = document.getElementById('tm_frch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 3)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userFrch[channel].tm = Number(divCollection.textContent) > 255 ?
+            255 : Number(divCollection.textContent);
+
+        divCollection.textContent = '';
         switch (keyCode) {
           case 'Enter':
             return {
               currentMenu: 30,
               position,
             };
-  
+
           case 'Escape':
             return {
               currentMenu: 32,
               position,
             };
-  
+
           case 'KeyM':
             return {
               currentMenu: 2,
               position,
             };
         }
-        break;
+      }
+      break;
+
+    case 32:
+      divCollection = document.getElementById('type_of_call_frch');
+      switch (keyCode) {
+        case 'Enter':
+          return {
+            currentMenu: 31,
+            position,
+          };
+
+        case 'Escape':
+          return {
+            currentMenu: userFrch[channel].typeOfCall === 2 ? 34 : 33,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+
+        case 'NumpadMultiply':
+          userFrch[channel].typeOfCall = (userFrch[channel].typeOfCall + 1) < 3 ?
+            userFrch[channel].typeOfCall + 1 : userFrch[channel].typeOfCall;
+          break;
+
+        case 'NumpadDivide':
+          userFrch[channel].typeOfCall = (userFrch[channel].typeOfCall - 1) >= 0 ?
+            userFrch[channel].typeOfCall - 1 : userFrch[channel].typeOfCall;
+          break;
+      }
+      divCollection.textContent = userFrch[channel].typeOfCall === 0 ? 'абонент' :
+        userFrch[channel].typeOfCall === 1 ? 'группа' : 'циркулярный';
+      break;
+
+    case 33:
+      divCollection = document.getElementById('number_of_call_frch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if ((userFrch[channel].typeOfCall === 0 && divCollection.textContent.length < 8) ||
+          (userFrch[channel].typeOfCall === 1 && divCollection.textContent.length < 5)
+        )
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          if (userFrch[channel].typeOfCall === 0) {
+            userFrch[channel].numberOfCall = Number(divCollection.textContent) > 0 ?
+              Number(divCollection.textContent) < 16777215 ?
+                Number(divCollection.textContent) : 16777215 : 1;
+          } else {
+            userFrch[channel].numberOfCall = Number(divCollection.textContent) > 0 ?
+              Number(divCollection.textContent) < 65534 ?
+                Number(divCollection.textContent) : 65534 : 1;
+          }
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 32,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 34,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 34:
+      divCollection = document.getElementById('group_frch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 5)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userFrch[channel].group = Number(divCollection.textContent) > 0 ?
+            Number(divCollection.textContent) < 65534 ?
+              Number(divCollection.textContent) : 65534 : 1;
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 33,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 35,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 35:
+      divCollection = document.getElementById('abonent_frch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 8)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userFrch[channel].abonent = Number(divCollection.textContent) > 0 ?
+            Number(divCollection.textContent) < 16777215 ?
+              Number(divCollection.textContent) : 16777215 : 1;
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 34,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 36,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 36:
+      divCollection = document.getElementById('power_frch');
+      switch (keyCode) {
+        case 'NumpadMultiply':
+          divCollection.textContent = 'Номинальная';
+          menuRadiostation.setPower(1);
+          break;
+
+        case 'NumpadDivide':
+          divCollection.textContent = 'Повышенная';
+          menuRadiostation.setPower(2);
+          break;
+
+        case 'Enter':
+          return {
+            currentMenu: 35,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+      }
+      break;
   }
   return null;
 }

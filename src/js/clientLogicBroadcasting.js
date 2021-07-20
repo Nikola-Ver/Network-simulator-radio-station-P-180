@@ -10,6 +10,22 @@ const userFrequencysOut = new Array(16).fill(0);
 const userFrequencysIn = new Array(16).fill(0);
 const userModulation = new Array(16).fill(0);
 const userChannelWidth = new Array(16).fill(0);
+const userFrch = new Array(16).fill({
+  tm: 255,
+  typeOfCall: 0,
+  numberOfCall: 1,
+  group: 1,
+  abonent: 1
+});
+const userPprch = new Array(16).fill({
+  network: 1,
+  tm: 255,
+  typeOfCall: 0,
+  numberOfCall: 1,
+  group: 1,
+  abonent: 1,
+  pseudoKey: 0
+});
 let channel = 0;
 
 function recordAudio(data) {
@@ -23,13 +39,7 @@ function recordAudio(data) {
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.addEventListener('dataavailable', (event) => {
-        socket.emit(data, {
-          audioChunks: event.data,
-          frequency: userFrequencysOut[channel],
-          beep: false,
-          speakVolume: menuRadiostation.speakVolume,
-          modulation: userModulation[channel],
-        });
+        radioEmit(data, event.data);
       });
 
       const start = () => {
@@ -51,16 +61,31 @@ function stopBeep() {
   menuRadiostation.beepOff();
 }
 
+function checkChannel(stream) {
+  return (
+    (
+      stream.modulation < 2 &&
+      stream.modulation === userModulation[channel] &&
+      stream.frequency === userFrequencysIn[channel]) || (
+      stream.modulation === 2 &&
+      (stream.frch.tm === userFrch[channel].tm || stream.frch.tm === 0) && (
+        stream.frequency === userFrequencysIn[channel] && (
+          (stream.frch.typeOfCall === 0 &&
+            stream.frch.numberOfCall === userFrch[channel].abonent) ||
+          (stream.frch.typeOfCall === 1 &&
+            stream.frch.numberOfCall === userFrch[channel].group) ||
+          stream.frch.typeOfCall === 2)
+      )
+    ));
+}
+
 socket.on('stream', async (stream) => {
   if (
     !menuRadiostation.statusBroadcating &&
     menuRadiostation.statusWorking &&
     menuRadiostation.statusAntenna
   ) {
-    if (
-      stream.frequency === userFrequencysIn[channel] &&
-      stream.modulation === userModulation[channel]
-    )
+    if (checkChannel(stream))
       try {
         if (stream.beep) {
           if (!menuRadiostation.statusBeep) {
@@ -119,6 +144,8 @@ socket.on('recording', async (record) => {
   let modulation = '';
   if (record.modulation == 0) modulation = 'АМ';
   if (record.modulation == 1) modulation = 'ЧМ';
+  if (record.modulation == 2) modulation = 'ФРЧ';
+  if (record.modulation == 3) modulation = 'ППРЧ';
 
   text.textContent =
     getHoursMinutes(date) +
@@ -204,23 +231,43 @@ socket.on('recording', async (record) => {
 
   function broadcastingBeep() {
     const interval = setInterval(async () => {
+      let flagBeep = true;
       if (!menuRadiostation.statusBroadcating) {
-        socket.emit('stream', {
-          audioChunks: 0,
-          frequency: userFrequencysOut[channel],
-          beep: false,
-          modulation: userModulation[channel],
-        });
+        flagBeep = false;
+        radioEmit('stream', 0);
         clearInterval(interval);
-      } else
-        socket.emit('stream', {
-          audioChunks: 0,
-          frequency: userFrequencysOut[channel],
-          beep: true,
-          modulation: userModulation[channel],
-        });
+      } else {
+        radioEmit('stream', 0, true);
+      }
     }, beepLength);
   }
 })();
 
-console.error = () => { };
+function radioEmit(typeOfData, audioChunks, beep = false) {
+  if (userModulation[channel] === 2) {
+    socket.emit(typeOfData, {
+      audioChunks,
+      frequency: userFrequencysOut[channel],
+      beep,
+      speakVolume: menuRadiostation.speakVolume,
+      modulation: userModulation[channel],
+      frch: userFrch[channel],
+    });
+  } else if (userModulation[channel] === 3) {
+    socket.emit(typeOfData, {
+      audioChunks,
+      beep,
+      speakVolume: menuRadiostation.speakVolume,
+      modulation: userModulation[channel],
+      pprch: userPprch[channel]
+    });
+  } else {
+    socket.emit(typeOfData, {
+      audioChunks,
+      frequency: userFrequencysOut[channel],
+      beep,
+      speakVolume: menuRadiostation.speakVolume,
+      modulation: userModulation[channel],
+    });
+  }
+}

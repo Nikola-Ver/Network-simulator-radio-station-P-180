@@ -61,6 +61,9 @@ function autoBlock() {
   }, 7000);
 }
 
+const paddedWithZeros = (size, val) =>
+  new Array(size - val.toString().length).fill('0').join('') + val.toString();
+
 function menu(currentMenu, position, keyCode) {
   if (autoBlocking) {
     clearInterval(autoBlocking);
@@ -71,6 +74,16 @@ function menu(currentMenu, position, keyCode) {
     timerDisplayID = menuRadiostation.clearTimerDisplay(timerDisplayID);
     timerDisplayID = menuRadiostation.setTimerDisplay(timerDisplay);
     menuImplementation.turnOnDisplay();
+  }
+
+  if (currentMenu > 27 && currentMenu < 37) {
+    document.getElementById('bottom_text_frequency').textContent =
+      paddedWithZeros(8, userFrch[channel].numberOfCall);
+  }
+
+  if (currentMenu > 36 && currentMenu < 48) {
+    document.getElementById('bottom_text_frequency').textContent =
+      paddedWithZeros(8, userPprch[channel].numberOfCall);
   }
 
   let pos = position;
@@ -99,15 +112,18 @@ function menu(currentMenu, position, keyCode) {
           };
 
         case 'Digit2':
-          menuRadiostation.frequencyCallFlag =
-            !menuRadiostation.frequencyCallFlag;
-          menuRadiostation.setFrequency();
-          divCollection = document.getElementById('common_top_text_channel');
-          if (menuRadiostation.frequencyCallFlag) {
-            divCollection.textContent = 'Адрес вызова (А)';
-          } else {
-            divCollection.textContent = 'Адрес приема (А)';
+          if (userModulation[channel] === 0 || userModulation[channel] === 1) {
+            menuRadiostation.frequencyCallFlag =
+              !menuRadiostation.frequencyCallFlag;
+            menuRadiostation.setFrequency();
+            divCollection = document.getElementById('common_top_text_channel');
+            if (menuRadiostation.frequencyCallFlag) {
+              divCollection.textContent = 'Адрес вызова (А)';
+            } else {
+              divCollection.textContent = 'Адрес приема (А)';
+            }
           }
+
           return {
             currentMenu: 0,
             position: 0,
@@ -240,6 +256,7 @@ function menu(currentMenu, position, keyCode) {
           divCollection[1].id = 'current_position';
           switch (position) {
             case 0:
+              document.getElementById('frequency_call').className = 'block_channel';
               document.getElementById('digit_frch').style.opacity = '0';
               currentChannel = channel;
               divCollection = document.getElementById('analogue_modulation');
@@ -247,38 +264,49 @@ function menu(currentMenu, position, keyCode) {
                 userModulation[currentChannel] === 0 ? 'АМ' : 'ЧМ';
               [divCollection] =
                 document.getElementsByClassName('operating_mode');
-              divCollection.textContent = 'АФ';
+
               return {
                 currentMenu: 16,
                 position,
               };
             case 1:
+              document.getElementById('frequency_call').className = 'not_active';
               document.getElementById('digit_frch').style.opacity = '0';
               [divCollection] =
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'АСФ';
+              userModulation[currentChannel] = -1;
+
               return {
                 currentMenu: 23,
                 position,
               };
             case 2:
+              document.getElementById('frequency_call').className = 'block_channel';
               document.getElementById('digit_frch').style.opacity = '0';
               [divCollection] =
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'ЦФ';
               userModulation[currentChannel] = 2;
+              divCollection = document.getElementById('common_top_text_channel');
+              divCollection.textContent = 'Адрес вызова (А)';
+
               return {
                 currentMenu: 28,
                 position,
               };
             case 3:
+              document.getElementById('frequency_call').className = 'block_channel';
               [divCollection] =
                 document.getElementsByClassName('operating_mode');
               divCollection.textContent = 'ЦФ';
               document.getElementById('digit_frch').style.opacity = '';
               userModulation[currentChannel] = 3;
+              divCollection = document.getElementById('common_top_text_channel');
+              divCollection.textContent = 'Адрес вызова (А)';
+
               return {
-                currentMenu: 2,
+                currentMenu: 37,
                 position,
               };
           }
@@ -1542,7 +1570,7 @@ function menu(currentMenu, position, keyCode) {
         switch (keyCode) {
           case 'Enter':
             return {
-              currentMenu: 33,
+              currentMenu: userFrch[channel].typeOfCall === 2 ? 33 : 32,
               position,
             };
 
@@ -1612,6 +1640,367 @@ function menu(currentMenu, position, keyCode) {
         case 'Enter':
           return {
             currentMenu: 35,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+      }
+      break;
+
+    case 37:
+      divCollection = document.getElementById('protocol_digit_pprch');
+      switch (keyCode) {
+        case 'Escape':
+          return {
+            currentMenu: 38,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+
+        case 'NumpadMultiply':
+          divCollection.textContent = 'модем 1х';
+          break;
+
+        case 'NumpadDivide':
+          divCollection.textContent = 'голос';
+          break;
+      }
+      break;
+
+    case 38:
+      divCollection = document.getElementById('newtwork_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 8)
+          divCollection.textContent += digit;
+      } else {
+        userPprch[channel].network = Number(divCollection.textContent);
+        divCollection.textContent = '';
+
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 37,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 39,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 39:
+      divCollection = document.getElementById('priority_pprch');
+      switch (keyCode) {
+        case 'Enter':
+          return {
+            currentMenu: 38,
+            position,
+          };
+
+        case 'Escape':
+          return {
+            currentMenu: 40,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+
+        case 'NumpadMultiply':
+          divCollection.textContent = 'ведущая';
+          break;
+
+        case 'NumpadDivide':
+          divCollection.textContent = 'ведомая';
+          break;
+      }
+      break;
+
+    case 40:
+      divCollection = document.getElementById('tm_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 3)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userPprch[channel].tm = Number(divCollection.textContent) > 255 ?
+            255 : Number(divCollection.textContent);
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 39,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 41,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 41:
+      divCollection = document.getElementById('type_of_call_pprch');
+      switch (keyCode) {
+        case 'Enter':
+          return {
+            currentMenu: 40,
+            position,
+          };
+
+        case 'Escape':
+          return {
+            currentMenu: userPprch[channel].typeOfCall === 2 ? 43 : 42,
+            position,
+          };
+
+        case 'KeyM':
+          return {
+            currentMenu: 2,
+            position,
+          };
+
+        case 'NumpadMultiply':
+          userPprch[channel].typeOfCall = (userPprch[channel].typeOfCall + 1) < 3 ?
+            userPprch[channel].typeOfCall + 1 : userPprch[channel].typeOfCall;
+          break;
+
+        case 'NumpadDivide':
+          userPprch[channel].typeOfCall = (userPprch[channel].typeOfCall - 1) >= 0 ?
+            userPprch[channel].typeOfCall - 1 : userPprch[channel].typeOfCall;
+          break;
+      }
+      divCollection.textContent = userPprch[channel].typeOfCall === 0 ? 'абонент' :
+        userPprch[channel].typeOfCall === 1 ? 'группа' : 'циркулярный';
+      break;
+
+    case 42:
+      divCollection = document.getElementById('number_of_call_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if ((userPprch[channel].typeOfCall === 0 && divCollection.textContent.length < 8) ||
+          (userPprch[channel].typeOfCall === 1 && divCollection.textContent.length < 5)
+        )
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          if (userPprch[channel].typeOfCall === 0) {
+            userPprch[channel].numberOfCall = Number(divCollection.textContent) > 0 ?
+              Number(divCollection.textContent) < 16777215 ?
+                Number(divCollection.textContent) : 16777215 : 1;
+          } else {
+            userPprch[channel].numberOfCall = Number(divCollection.textContent) > 0 ?
+              Number(divCollection.textContent) < 65534 ?
+                Number(divCollection.textContent) : 65534 : 1;
+          }
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 41,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 43,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 43:
+      divCollection = document.getElementById('group_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 5)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userPprch[channel].group = Number(divCollection.textContent) > 0 ?
+            Number(divCollection.textContent) < 65534 ?
+              Number(divCollection.textContent) : 65534 : 1;
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: userPprch[channel].typeOfCall === 2 ? 41 : 42,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 44,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 44:
+      divCollection = document.getElementById('abonent_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 8)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userPprch[channel].abonent = Number(divCollection.textContent) > 0 ?
+            Number(divCollection.textContent) < 16777215 ?
+              Number(divCollection.textContent) : 16777215 : 1;
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 43,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 45,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 45:
+      divCollection = document.getElementById('host_address_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 8)
+          divCollection.textContent += digit;
+      } else {
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 44,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 46,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 46:
+      divCollection = document.getElementById('pseudo_key_pprch');
+      if (keyCode.search(/Digit/gi) !== -1) {
+        digit = keyCode.replace('Digit', '');
+        if (divCollection.textContent.length < 3)
+          divCollection.textContent += digit;
+      } else {
+        if (divCollection.textContent.length > 0)
+          userPprch[channel].pseudoKey = Number(divCollection.textContent) > 255 ?
+            255 : Number(divCollection.textContent);
+
+        divCollection.textContent = '';
+        switch (keyCode) {
+          case 'Enter':
+            return {
+              currentMenu: 45,
+              position,
+            };
+
+          case 'Escape':
+            return {
+              currentMenu: 47,
+              position,
+            };
+
+          case 'KeyM':
+            return {
+              currentMenu: 2,
+              position,
+            };
+        }
+      }
+      break;
+
+    case 47:
+      divCollection = document.getElementById('power_pprch');
+      switch (keyCode) {
+        case 'NumpadMultiply':
+          divCollection.textContent = 'Номинальная';
+          menuRadiostation.setPower(1);
+          break;
+
+        case 'NumpadDivide':
+          divCollection.textContent = 'Повышенная';
+          menuRadiostation.setPower(2);
+          break;
+
+        case 'Enter':
+          return {
+            currentMenu: 46,
             position,
           };
 

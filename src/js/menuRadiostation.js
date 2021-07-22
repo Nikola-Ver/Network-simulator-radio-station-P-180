@@ -419,6 +419,7 @@ const menuImplementation = {
       case 23:
       case 16:
       case 28:
+      case 37:
         this.changeTextButton('', 'Итог', 'След.');
         break;
 
@@ -438,13 +439,23 @@ const menuImplementation = {
       case 33:
       case 34:
       case 35:
+      case 38:
+      case 39:
+      case 40:
+      case 41:
+      case 42:
+      case 43:
+      case 44:
+      case 45:
+      case 46:
         this.changeTextButton('Пред.', 'Итог', 'След.');
         break;
 
       case 20:
       case 27:
       case 36:
-          this.changeTextButton('Пред.', 'Итог', '');
+      case 47:
+        this.changeTextButton('Пред.', 'Итог', '');
         break;
     }
   },

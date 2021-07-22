@@ -63,20 +63,31 @@ function stopBeep() {
 
 function checkChannel(stream) {
   return (
-    (
-      stream.modulation < 2 &&
-      stream.modulation === userModulation[channel] &&
-      stream.frequency === userFrequencysIn[channel]) || (
-      stream.modulation === 2 &&
-      (stream.frch.tm === userFrch[channel].tm || stream.frch.tm === 0) && (
-        stream.frequency === userFrequencysIn[channel] && (
-          (stream.frch.typeOfCall === 0 &&
-            stream.frch.numberOfCall === userFrch[channel].abonent) ||
-          (stream.frch.typeOfCall === 1 &&
-            stream.frch.numberOfCall === userFrch[channel].group) ||
-          stream.frch.typeOfCall === 2)
-      )
-    ));
+    userModulation[channel] !== -1 && (
+      (
+        stream.modulation < 2 &&
+        stream.modulation === userModulation[channel] &&
+        stream.frequency === userFrequencysIn[channel]) || (
+        stream.modulation === 2 &&
+        (stream.frch.tm === userFrch[channel].tm || stream.frch.tm === 0) && (
+          stream.frequency === userFrequencysIn[channel] && (
+            (stream.frch.typeOfCall === 0 &&
+              stream.frch.numberOfCall === userFrch[channel].abonent) ||
+            (stream.frch.typeOfCall === 1 &&
+              stream.frch.numberOfCall === userFrch[channel].group) ||
+            stream.frch.typeOfCall === 2)
+        )
+      ) || (
+        stream.modulation === 3 &&
+        (stream.pprch.tm === userPprch[channel].tm || stream.pprch.tm === 0) &&
+        (stream.pprch.pseudoKey === userPprch[channel].pseudoKey) && (
+          (stream.pprch.typeOfCall === 0 &&
+            stream.pprch.numberOfCall === userPprch[channel].abonent) ||
+          (stream.pprch.typeOfCall === 1 &&
+            stream.pprch.numberOfCall === userPprch[channel].group) ||
+          stream.pprch.typeOfCall === 2
+        )
+      )));
 }
 
 socket.on('stream', async (stream) => {
@@ -147,13 +158,20 @@ socket.on('recording', async (record) => {
   if (record.modulation == 2) modulation = 'ФРЧ';
   if (record.modulation == 3) modulation = 'ППРЧ';
 
-  text.textContent =
-    getHoursMinutes(date) +
-    ' (' +
-    String((record.frequency + 2400) / 80) +
-    'МГц) [' +
-    modulation +
-    ']:';
+  if (record.modulation >= 0 || record.modulation <= 2) {
+    text.textContent =
+      getHoursMinutes(date) +
+      ' (' +
+      String((record.frequency + 2400) / 80) +
+      'МГц) [' +
+      modulation +
+      ']:';
+  } else {
+    text.textContent =
+      getHoursMinutes(date) + '[' +
+      modulation +
+      ']:';
+  }
 
   block.className = 'audio_block';
   block.appendChild(text);

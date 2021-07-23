@@ -158,7 +158,7 @@ socket.on('recording', async (record) => {
   if (record.modulation == 2) modulation = 'ФРЧ';
   if (record.modulation == 3) modulation = 'ППРЧ';
 
-  if (record.modulation >= 0 || record.modulation <= 2) {
+  if (record.modulation >= 0 && record.modulation <= 2) {
     text.textContent =
       getHoursMinutes(date) +
       ' (' +

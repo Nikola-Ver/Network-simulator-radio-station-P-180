@@ -21,7 +21,7 @@
 - states of connected modules and current modes;
 - the state of the transmission and reception frequency;
 - algorithms for recording, transmission and reproduction of data;
-  - interaction of structural blocks of the application.
+- interaction of structural blocks of the application.
 
 The software tool transmits in full the process of operation of the radio station, and is also close to the most accurate copy of it.
 
